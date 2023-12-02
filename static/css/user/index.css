@@ -62,6 +62,15 @@ h6 span {
   min-height: 100vh;
 }
 
+#avatar_img {
+  border: 2px solid #fff;
+  border-radius: 100px;
+  object-fit: cover;
+  cursor: pointer;
+  height: 90px;
+  width: 90px;
+}
+
 [type="checkbox"]:checked,
 [type="checkbox"]:not(:checked) {
   position: absolute;
@@ -153,7 +162,7 @@ h6 span {
 
 .card-back {
   transform: rotateY(180deg);
-  height: 115%;
+  height: 145%;
 }
 
 .checkbox:checked~.card-3d-wrap .card-3d-wrapper {
