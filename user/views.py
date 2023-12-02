@@ -9,7 +9,7 @@ from user.serializers import SignUpSerializer, SignInSerializer
 
 
 class SignUpView(TemplateView):
-    template_name = 'user/authentication.html'
+    template_name = "user/authentication.html"
 
     def get_context_data(self, **kwargs):
         return super().get_context_data(**kwargs)
@@ -28,14 +28,9 @@ class SignUpAPI(APIView):
         serializer = SignUpSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
-            return Response({
-                "code": "success"
-            })
+            return Response({"code": "success"})
         else:
-            return Response({
-                "errors": serializer.errors,
-                "code": "error"
-            })
+            return Response({"errors": serializer.errors, "code": "error"})
 
 
 class SignInAPI(APIView):
@@ -45,14 +40,9 @@ class SignInAPI(APIView):
         if serializer.is_valid():
             user = serializer.get_user()
             login(request, user)
-            return Response({
-                "code": "success"
-            })
+            return Response({"code": "success"})
         else:
-            return Response({
-                "errors": serializer.errors,
-                "code": "error"
-            })
+            return Response({"errors": serializer.errors, "code": "error"})
 
 
 class SignOutView(View):
