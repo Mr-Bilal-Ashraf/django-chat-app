@@ -7,6 +7,12 @@ from django.contrib.auth import get_user_model, authenticate
 User = get_user_model()
 
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("id", "username", "email", "avatar")
+
+
 class SignUpSerializer(serializers.ModelSerializer):
     re_password = serializers.CharField()
 
@@ -31,3 +37,21 @@ class SignUpSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+
+class SignInSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
+
+    def __init__(self, instance=None, data=empty, **kwargs):
+        super().__init__(instance, data, **kwargs)
+        self.user = None
+
+    def get_user(self):
+        return self.user
+
+    def validate(self, attrs):
+        user = authenticate(username=attrs['username'], password=attrs['password'])
+        if not user:
+            raise serializers.ValidationError('Invalid credentials.')
+        self.user = user
+        return super().validate(attrs)
