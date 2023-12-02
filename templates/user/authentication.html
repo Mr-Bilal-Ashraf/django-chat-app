@@ -1,0 +1,123 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+		integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="{% static 'css/user/index.css' %}">
+
+	<title>Authentication</title>
+</head>
+
+<body>
+
+	<a href="https://github.com/Mr-Bilal-Ashraf/" class="logo" target="_blank">
+		<img src="{% static 'logo.png' %}" alt="">
+	</a>
+
+	<div class="section">
+		<div class="container">
+			<div class="row full-height justify-content-center">
+				<div class="col-12 text-center align-self-center py-5">
+					<div class="section pb-5 pt-5 pt-sm-2 text-center">
+						<h6 class="mb-0 pb-3"><span>Log In </span><span>Sign Up</span></h6>
+						<input class="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
+						<label for="reg-log"></label>
+						<div class="card-3d-wrap mx-auto">
+							<div class="card-3d-wrapper">
+								<div class="card-front">
+									<div class="center-wrap">
+										<div class="section text-center">
+											<h4 class="mb-4 pb-3">Log In</h4>
+											<form id="sign_in">
+												<div class="input-group mb-3">
+													<span class="input-group-text">
+														<i class="fa-solid fa-user"></i>
+													</span>
+													<input type="text" class="form-control form-style" minlength="5"
+														placeholder="Username" id="username_in" autocomplete="off">
+												</div>
+
+												<div class="input-group mb-3">
+													<span class="input-group-text">
+														<i class="fa-solid fa-lock"></i>
+													</span>
+													<input type="password" class="form-control form-style" minlength="8"
+														placeholder="Your Password" id="password_in">
+												</div>
+												<div id="sign_in_error" class="form-text text-danger">Username already exists!</div>
+
+												<button type="submit" class="btn mt-4">submit</button>
+											</form>
+											<p class="mb-0 mt-4 text-center">
+												<a href="#0" class="link">Forgot your password?</a>
+											</p>
+										</div>
+									</div>
+								</div>
+								<div class="card-back">
+									<div class="center-wrap">
+										<div class="section text-center">
+											<h4 class="mb-4 pb-3">Sign Up</h4>
+											<form id="sign_up">
+												<div class="input-group mb-3">
+													<span class="input-group-text">
+														<i class="fa-solid fa-user"></i>
+													</span>
+													<input type="text" class="form-control form-style" minlength="8"
+														placeholder="Your Username" id="username_up" autocomplete="off">
+												</div>
+
+												<div class="input-group mb-3">
+													<span class="input-group-text">
+														<i class="fa-solid fa-at"></i>
+													</span>
+													<input type="email" class="form-control form-style" minlength="10"
+														placeholder="Your Email" id="email_up" autocomplete="off">
+												</div>
+
+												<div class="input-group mb-3">
+													<span class="input-group-text">
+														<i class="fa-solid fa-lock"></i>
+													</span>
+													<input type="password" class="form-control form-style" minlength="8"
+														placeholder="Type Password" id="password_up" autocomplete="off">
+												</div>
+
+												<div class="input-group mb-3">
+													<span class="input-group-text">
+														<i class="fa-solid fa-lock"></i>
+													</span>
+													<input type="password" class="form-control form-style" minlength="8"
+														placeholder="Retype Password" id="repassword_up"
+														autocomplete="off">
+												</div>
+												<div id="sign_up_error" class="form-text text-danger"></div>
+												
+												<button type="submit" class="btn mt-4">submit</button>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/user/index.js' %}"></script>
+
+</html>
