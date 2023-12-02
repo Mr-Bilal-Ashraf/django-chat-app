@@ -6,4 +6,6 @@ app_name = 'user'
 
 urlpatterns = [
     path("auth", SignUpView.as_view(), name="signup"),
+    path("auth", SignUpView.as_view(), name="login"),
+    path("api/signup/", SignUpAPI.as_view(), name="signup"),
 ]
