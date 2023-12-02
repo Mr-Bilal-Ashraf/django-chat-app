@@ -53,3 +53,9 @@ class SignInAPI(APIView):
                 "errors": serializer.errors,
                 "code": "error"
             })
+
+
+class SignOutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect(reverse("user:login"))
