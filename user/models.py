@@ -10,6 +10,7 @@ class User(AbstractUser):
     )
     email = models.EmailField(_("email address"), unique=True)
     avatar = models.ImageField(upload_to="avatars/", blank=True, null=True)
+    friends = models.ManyToManyField("self", blank=True)
 
     first_name = None
     last_name = None
