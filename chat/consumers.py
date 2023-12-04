@@ -1,11 +1,7 @@
 import json
 
-from urllib.parse import parse_qs
-
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
-
-from django.contrib.auth.models import User
 
 
 class BaseConsumer(WebsocketConsumer):
@@ -15,10 +11,6 @@ class BaseConsumer(WebsocketConsumer):
         self.user_notifications = None
 
     def connect(self):
-        params = self.scope["query_string"].decode('utf-8')
-        params = parse_qs(params)
-        id = params.get('user_id', 1)[0]
-        self.scope["user"] = User.objects.get(pk=id)
         if self.scope["user"].is_authenticated:
             self.user_notifications = f"noti_{self.scope['user'].id}"
 
