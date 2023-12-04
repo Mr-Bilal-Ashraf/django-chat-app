@@ -100,7 +100,7 @@ function load_convo() {
                         <div class="name">
                             ${convo_title}
                         </div>
-                        <div class="last-msg heading-color">
+                        <div class="last-msg">
                             ${convo.last_msg.text}
                         </div>
                     </div>
@@ -113,7 +113,6 @@ function load_convo() {
                         </span>
                     </div>
                 </div>
-                <convo-separator class="convo-separator"></convo-separator>
                 
                 `);
             });

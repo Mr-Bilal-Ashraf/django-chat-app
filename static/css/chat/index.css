@@ -14,7 +14,7 @@
 }
 
 #left-container {
-    background-color: #e1e1e1;
+    background-color: #17212b;
     position: relative;
     min-width: 27%;
     max-width: 35%;
@@ -53,7 +53,6 @@
 }
 
 .profile img {
-    filter: drop-shadow(1px 2px 6px black);
     object-fit: cover;
     width: 80px;
     height: 80px;
@@ -70,7 +69,7 @@
 
 .profile .name {
     text-transform: capitalize;
-    color: #4789ff;
+    color: #f5f5f5;
     font-weight: 700;
 }
 
@@ -117,7 +116,8 @@
 .search input {
     border-top-left-radius: 50px;
     border-end-start-radius: 50px;
-    ;
+    background-color: #242f3d;
+    border: 1px solid #242f3d;
 }
 
 .search input:focus {
@@ -129,6 +129,12 @@
 .search span {
     border-top-right-radius: 50px;
     border-end-end-radius: 50px;
+    background-color: #6c7883;
+    border: 1px solid #6c7883;
+}
+
+.fa-gear {
+    color: #6c7883;
 }
 
 #convo-list {
@@ -141,6 +147,7 @@
     line-height: 25px;
     padding: 5px 0px;
     cursor: pointer;
+    transition: 0.1s;
 }
 
 .convo-separator {
@@ -160,12 +167,13 @@
 
 .convo .name {
     text-transform: capitalize;
-    color: #4789ff;
+    color: #f5f5f5;
     font-size: 16px;
     font-weight: 600;
 }
 
 .convo .last-msg {
+    color: #748597;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -173,6 +181,7 @@
 }
 
 .convo .msg-time {
+    color: #748597;
     font-size: 13px;
 }
 
@@ -198,11 +207,18 @@
 }
 
 .side-btn {
-    cursor: pointer;
-    padding: 15px;
-    border: 1px solid darkgrey;
+    border: 1px solid #748597;
     border-radius: 10px;
     margin: 10px 5px;
+    color: #f5f5f5;
+    cursor: pointer;
+    padding: 15px;
+    transition: 0.1s;
+}
+
+.side-btn:hover, .convo:hover {
+    background-color: #263544;
+    border-radius: 6px;
 }
 
 
@@ -210,7 +226,7 @@
 
 
 #right-container {
-    background-color: #fff;
+    background-color: #0e1621;
     width: 100%;
     padding: 20px;
 }
