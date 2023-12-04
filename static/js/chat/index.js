@@ -1,4 +1,6 @@
 let isResizing = false;
+let ID = null;
+let convo_pagination_page = 1;
 
 function startResize(e) {
     isResizing = true;
@@ -19,11 +21,22 @@ function stopResize() {
     document.removeEventListener('mouseup', stopResize);
 }
 
-const socket = new WebSocket("ws://127.0.0.1:8000/ws/?user_id=3");
-const ID = 3;
 
-$("#friends").on("click", () => {
-    $("#frnds-list").slideToggle(700);
+fetch("/chat/my_user/").
+    then(resp => {
+        return resp.json()
+    }).then(data => {
+        ID = data.id;
+        $("#user_profile_picture").attr("src", data.avatar);
+        $("#user_profile_picture").attr("alt", `${data.username} profile picture`);
+        $("#user_name").text(data.username);
+        $("#user_title").text("");
+    })
+
+const socket = new WebSocket("ws://127.0.0.1:8000/ws/");
+
+$("#conversations").on("click", () => {
+    $("#convo-list").slideToggle(700);
 })
 
 $("#settings").on("click", () => {
