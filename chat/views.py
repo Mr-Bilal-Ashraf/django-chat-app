@@ -19,7 +19,7 @@ class IndexView(LoginRequiredMixin, TemplateView):
     template_name = "chat/index.html"
 
 
-class FriendListAPI(APIView):
+class MyUserAPI(APIView):
     def get(self, request):
         return Response(
             UserSerializer(request.user).data

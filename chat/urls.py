@@ -7,6 +7,6 @@ app_name = "chat"
 
 urlpatterns = [
     path("", IndexView.as_view(), name="index"),
-    path("friends/", FriendListAPI.as_view(), name="friends"),
+    path("my_user/", MyUserAPI.as_view(), name="my_user"),
     path("conversations/", ConvoListAPI.as_view(), name="conversations"),
 ]
