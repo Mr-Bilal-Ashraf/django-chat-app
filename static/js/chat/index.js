@@ -60,3 +60,51 @@ $("#msg_form").submit(e => {
     }))
     return false;
 })
+
+function load_convo() {
+    fetch(`/chat/conversations/?page=${convo_pagination_page}`).
+        then(resp => {
+            return resp.json()
+        }).then(data => {
+
+            if(data.next){
+                $('.load_more_btn').fadeIn(300)
+                convo_pagination_page++;
+            }else{
+                $('.load_more_btn').fadeOut(300);
+            }
+
+            data.results.forEach(convo => {
+                let convo_avtar = (ID != convo.initiator.id) ? convo.initiator.avatar : convo.participant.avatar;
+                let convo_title = (ID != convo.initiator.id) ? convo.initiator.username : convo.participant.username;
+
+                $("#convo-list").append(`
+                <div class="row convo" id="convo_${convo.id}">
+                    <div class="col-2">
+                        <img src="${convo_avtar}">
+                    </div>
+                    <div class="col-7">
+                        <div class="name">
+                            ${convo_title}
+                        </div>
+                        <div class="last-msg heading-color">
+                            ${convo.last_msg.text}
+                        </div>
+                    </div>
+                    <div class="col-3 text-end">
+                        <div class="msg-time">
+                            ${convo.last_msg.msg_time}
+                        </div>
+                        <span class="new-msg" id="new_msg_${convo.id}">
+                            
+                        </span>
+                    </div>
+                </div>
+                <convo-separator class="convo-separator"></convo-separator>
+                
+                `);
+            });
+        })
+}
+
+setTimeout(load_convo, 1000);
