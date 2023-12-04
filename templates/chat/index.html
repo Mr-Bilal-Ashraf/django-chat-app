@@ -30,14 +30,14 @@
             <!-- User profile -->
             <div class="profile row align-items-center">
                 <div class="col-3">
-                    <img src="{% static 'imgs/chat/profile_7.jpeg' %}" alt="">
+                    <img class="active-user" id="user_profile_picture" src="">
                 </div>
                 <div class="col-8" style="line-height: 0px;">
-                    <div class="h3 name">
-                        Frank Robles May
+                    <div class="h3 name" id="user_name">
+                        
                     </div>
-                    <div class="rank heading-color">
-                        Senior Developer
+                    <div class="rank heading-color" id="user_title">
+                        
                     </div>
                 </div>
                 <div class="col-1">
@@ -81,54 +81,32 @@
                     </span>
                 </div>
 
-                <!-- Friends Button -->
-                <div class="side-btn d-flex justify-content-between" id="friends">
-                    <div>Friends</div>
-                    <div class="requests-notification">5</div>
+                <!-- Conversations Button -->
+                <div class="side-btn d-flex justify-content-between" id="conversations">
+                    <div>Conversations</div>
+                    <div class="convo-notification" id="new-msgs"></div>
                 </div>
 
                 <!-- Friends List -->
-                <div id="frnds-list">
-                    <div class="row frnd">
+                <div id="convo-list">
+                    <!-- <div class="row convo" id="convo_1">
                         <div class="col-2">
-                            <img src="{% static 'imgs/chat/profile_1.webp' %}">
+                            <img src="{% static 'imgs/user/user.png' %}">
                         </div>
                         <div class="col-7">
                             <div class="name">
-                                Victor Mathieux
+                                Charles Xavier
                             </div>
                             <div class="last-msg heading-color">
-                                Yahoo Baba just sent you a new msg...
+                                Our boat, the Sunseeker.
                             </div>
                         </div>
                         <div class="col-3 text-end">
                             <div class="msg-time">
                                 10:34 AM
                             </div>
-                            <span class="new-msg">
-                                2
-                            </span>
-                        </div>
-                    </div>
-                    <frnd-separator class="frnd-separator"></frnd-separator>
-                    <div class="row frnd">
-                        <div class="col-2">
-                            <img src="{% static 'imgs/chat/profile_2.webp' %}">
-                        </div>
-                        <div class="col-7">
-                            <div class="name">
-                                Himani Amoli
-                            </div>
-                            <div class="last-msg">
-                                Yahoo Baba just sent you a new msg...
-                            </div>
-                        </div>
-                        <div class="col-3 text-end">
-                            <div class="msg-time">
-                                10:34 AM
-                            </div>
-                            <span class="new-msg">
-                                2
+                            <span class="new-msg" id="new_msg_1">
+                                
                             </span>
                         </div>
                     </div>
@@ -353,12 +331,13 @@
                         </div>
                     </div>
                     <!-- <frnd-separator class="frnd-separator"></frnd-separator> -->
+                    <convo-separator class="convo-separator"></convo-separator> -->
                 </div>
 
                 <!-- Requests Button -->
                 <div class="side-btn d-flex justify-content-between">
                     <div>Requests</div>
-                    <div class="requests-notification">2</div>
+                    <div class="convo-notification">2</div>
                 </div>
             </div>
 

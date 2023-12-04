@@ -69,6 +69,7 @@
 }
 
 .profile .name {
+    text-transform: capitalize;
     color: #4789ff;
     font-weight: 700;
 }
@@ -103,6 +104,12 @@
     padding: 5px;
 }
 
+.load_more_btn {
+    padding: .375rem 2.75rem;
+    border-radius: 15px;
+    display: none;
+}
+
 .search {
     width: 85%;
 }
@@ -124,12 +131,11 @@
     border-end-end-radius: 50px;
 }
 
-#frnds-list {
+#convo-list {
     margin: 0 10px;
-    display: none;
 }
 
-.frnd {
+.convo {
     width: 100%;
     margin: 12px auto;
     line-height: 25px;
@@ -137,14 +143,14 @@
     cursor: pointer;
 }
 
-.frnd-separator {
+.convo-separator {
     border-bottom: 1px solid #c2c2c2;
     display: block;
     margin: 0 auto;
     width: 75%;
 }
 
-.frnd img,
+.convo img,
 .chat-user img {
     object-fit: cover;
     width: 50px;
@@ -152,29 +158,38 @@
     border-radius: 100px;
 }
 
-.frnd .name {
+.convo .name {
+    text-transform: capitalize;
     color: #4789ff;
     font-size: 16px;
     font-weight: 600;
 }
 
-.frnd .last-msg {
+.convo .last-msg {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
     font-size: 13px;
 }
 
-.frnd .msg-time {
+.convo .msg-time {
     font-size: 13px;
 }
 
-.frnd .new-msg {
-    font-size: 13px;
+#new-msgs {
+    display: none;
+}
+
+.convo .new-msg {
     background-color: #4789ff;
-    padding: 4px 8px;
     border-radius: 12px;
+    padding: 4px 8px;
+    font-size: 13px;
     color: #fff;
+    display: none;
 }
 
-.requests-notification {
+.convo-notification {
     font-size: 12px;
     background-color: #4789ff;
     padding: 3px 8px;
