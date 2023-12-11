@@ -66,6 +66,8 @@ socket.addEventListener("message", e => {
                 </div>
             </div>
         `);
+        var offset = $("#conversation div:last").offset().top;
+        $("#conversation").animate({ scrollTop: offset }, 1000);
     }
 })
 
@@ -83,7 +85,7 @@ $("#msg_form").on("submit", e => {
     return false;
 })
 
-function load_previous_chat(convo_id, page_num = 1) {
+function load_previous_chat(convo_id, page_num = 1, first = false) {
     fetch(`/chat/conversations/detail/${convo_id}/?page=${page_num}`).
         then(resp => {
             return resp.json()
@@ -102,7 +104,11 @@ function load_previous_chat(convo_id, page_num = 1) {
                         </div>
                     `);
                 })
-                
+                if (first) {
+                    var offset = $("#conversation div:last").offset().top;
+                    $("#conversation").animate({ scrollTop: offset }, 1000);
+                }
+
             } else {
                 // remove convo as no convo found
             }
@@ -123,7 +129,7 @@ function start_chat(participant_id, convo_id) {
                 $(".chat-user").css({ "display": "flex" });
                 $("#no-chat-dialouge").hide();
                 $(".typing-section").show();
-                load_previous_chat(convo_id, 1);
+                load_previous_chat(convo_id, 1, true);
             } else if (data.code == "error") {
                 $("#no-chat-dialouge").text(data.detail);
             }
