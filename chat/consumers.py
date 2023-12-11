@@ -52,7 +52,7 @@ class BaseConsumer(WebsocketConsumer):
 
     def action_chat(self, data: dict):
         """
-            Format for action like : { "action": "CHAT", "user_id": "3040", "message": "hello dear"}
+            Format for action like : { "action": "CHAT", "receiver_id": "3040", "message": "hello dear"}
         """
         user_id = data.pop("receiver_id")
         data['sender'] = self.scope["user"].id

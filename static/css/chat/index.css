@@ -4,6 +4,11 @@
     font-family: Helvetica;
 }
 
+body {
+    background: #17212b;
+    overflow-y: hidden;
+}
+
 .heading-color {
     color: #565656;
 }
@@ -14,7 +19,7 @@
 }
 
 #left-container {
-    background-color: #17212b;
+    border: 1px solid #0e1621;
     position: relative;
     min-width: 27%;
     max-width: 35%;
@@ -118,11 +123,15 @@
     border-end-start-radius: 50px;
     background-color: #242f3d;
     border: 1px solid #242f3d;
+    color: #748597;
 }
 
 .search input:focus {
+    background-color: #242f3d;
+    border: 1px solid #242f3d;
+    color: #748597;
     box-shadow: none;
-    outline: none
+    outline: none;
 }
 
 
@@ -216,7 +225,8 @@
     transition: 0.1s;
 }
 
-.side-btn:hover, .convo:hover {
+.side-btn:hover,
+.convo:hover {
     background-color: #263544;
     border-radius: 6px;
 }
@@ -226,13 +236,12 @@
 
 
 #right-container {
-    background-color: #0e1621;
     width: 100%;
-    padding: 20px;
 }
 
 .chat-user {
-    border-bottom: 1px solid darkgrey;
+    border: 1px solid #0e1621;
+    padding: 0px 15px;
 }
 
 .chat-user .img {
@@ -245,10 +254,13 @@
 }
 
 .chat-section {
-    height: calc(100vh - 105px);
+    height: calc(100vh - 83px);
 }
 
 #conversation {
+    padding: 0px 15px 10px 20px;
+    background-color: #0e1621;
+    padding-bottom: 10px;
     overflow-y: scroll;
     height: 90%;
 }
@@ -263,10 +275,10 @@
 #conversation .msg-day {
     margin: 15px auto;
     width: max-content;
-    background: #10cccc;
+    background: #1e2c3a;
     padding: 10px 40px;
-    border-radius: 5px;
-    color: #fff;
+    border-radius: 15px;
+    color: #e8e8e8;
 }
 
 .msg {
@@ -282,7 +294,7 @@
 .msg-content {
     width: fit-content;
     padding: 10px 20px;
-    color: #565656;
+    color: #e8e8e8;
     margin: 8px 10px;
     max-width: 60%;
 }
@@ -293,8 +305,7 @@
 
 .receive-msg .msg-content {
     border-radius: 0px 15px 15px 15px;
-    background-color: #5d57f9;
-    color: #fff;
+    background-color: #182533;
 }
 
 .sent-msg {
@@ -303,7 +314,7 @@
 }
 
 .sent-msg .msg-content {
-    background-color: #f0f0f0;
+    background-color: #2b5278;
     border-radius: 15px 0px 15px 15px;
 }
 
@@ -317,7 +328,8 @@
 }
 
 .typing-section {
-    border-top: 1px solid darkgrey;
+    border: 1px solid #0e1621;
+    padding: 0 20px;
 }
 
 .typing-section input {
