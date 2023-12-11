@@ -29,6 +29,7 @@ body {
     background-color: #bcbcbc;
     position: absolute;
     cursor: ew-resize;
+    display: none;
     height: 100%;
     width: 2px;
     right: 0;
@@ -236,12 +237,25 @@ body {
 
 
 #right-container {
+    background-color: #0e1621;
     width: 100%;
+}
+
+.no-chat-dialouge {
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+    width: fit-content;
+    padding: 6px 15px;
+    color: #e8e8e8;
+    position: absolute;
+    left: 50%;
+    top: 50%;
 }
 
 .chat-user {
     border: 1px solid #0e1621;
     padding: 0px 15px;
+    display: none !important;
 }
 
 .chat-user .img {
@@ -259,7 +273,6 @@ body {
 
 #conversation {
     padding: 0px 15px 10px 20px;
-    background-color: #0e1621;
     padding-bottom: 10px;
     overflow-y: scroll;
     height: 90%;
@@ -330,6 +343,7 @@ body {
 .typing-section {
     border: 1px solid #0e1621;
     padding: 0 20px;
+    display: none;
 }
 
 .typing-section input {
