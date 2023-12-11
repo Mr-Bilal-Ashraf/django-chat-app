@@ -241,7 +241,7 @@ body {
     width: 100%;
 }
 
-.no-chat-dialouge {
+#no-chat-dialouge {
     border: 1px solid #e8e8e8;
     border-radius: 10px;
     width: fit-content;
@@ -254,8 +254,14 @@ body {
 
 .chat-user {
     border: 1px solid #0e1621;
+    background: #17212b;
     padding: 0px 15px;
-    display: none !important;
+    display: none;
+}
+
+#receive-user-name {
+    color: #f5f5f5;
+    text-transform: capitalize;
 }
 
 .chat-user .img {
