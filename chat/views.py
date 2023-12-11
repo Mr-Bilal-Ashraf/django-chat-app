@@ -1,4 +1,5 @@
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -9,7 +10,7 @@ from django.db.models import Q, Max
 
 from user.serializers import UserSerializer
 from chat.models import Conversation
-from chat.serializers import ConvoSerializer
+from chat.serializers import ConvoSerializer, MessageSerializer
 
 User = get_user_model()
 
@@ -23,9 +24,6 @@ class MyUserAPI(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
-        return Response(
-            UserSerializer(request.user).data
-        )
         return Response({
             "code": "success",
             "user": UserSerializer(request.user).data
@@ -49,6 +47,7 @@ class ParticipantAPI(APIView):
 
 
 class ConvoListAPI(APIView):
+    permission_classes = (IsAuthenticated,)
     pagination_class = PageNumberPagination
 
     def get(self, request):
@@ -63,3 +62,22 @@ class ConvoListAPI(APIView):
         paginated_queryset = paginator.paginate_queryset(ordered_conversations, request)
         serializer = ConvoSerializer(paginated_queryset, many=True)
         return paginator.get_paginated_response(serializer.data)
+
+
+class ConvoDetailAPI(APIView):
+    permission_classes = (IsAuthenticated,)
+    pagination_class = PageNumberPagination
+
+    def get(self, request, pk=None):
+        conversation = Conversation.objects.filter(id=pk)
+        if conversation:
+            messages = conversation.first().message_set.order_by("-id")
+            paginator = self.pagination_class()
+            paginated_queryset = paginator.paginate_queryset(messages, request)
+            serializer = MessageSerializer(paginated_queryset, many=True)
+            return paginator.get_paginated_response(serializer.data)
+        else:
+            return Response({
+                "code": "error",
+                "detail": "No conversation found."
+            })

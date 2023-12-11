@@ -1,6 +1,8 @@
 let isResizing = false;
-let ID = null;
+let USER = null;
 let PARTICIPANT = null;
+let CONVO_ID = null;
+
 let convo_pagination_page = 1;
 
 function startResize(e) {
@@ -53,14 +55,14 @@ $("#settings").on("click", () => {
 socket.addEventListener("message", e => {
     data = JSON.parse(e.data);
     if (data.action == "CHAT") {
-        console.log(data)
-        sender = data.sender != ID ? 'receive' : 'sent';
+        sender = data.sender != USER.id ? 'receive' : 'sent';
+        avatar = data.sender != USER.id ? PARTICIPANT.avatar : USER.avatar;
         $("#conversation").append(`
-            <div class="${sender}-msg msg">
-                <img class="user-img" src="/static/imgs/profile_6.webp">
+            <div class="${sender}-msg msg" id="msg-${data.id}">
+                <img class="user-img" src="${avatar}">
                 <div class="msg-content">
-                    ${data.message}
-                    <div class="time">07:30 pm</div>
+                    ${data.text}
+                    <div class="time">${data.msg_time}</div>
                 </div>
             </div>
         `);
@@ -68,16 +70,44 @@ socket.addEventListener("message", e => {
 })
 
 
-$("#msg_form").submit(e => {
+$("#msg_form").on("submit", e => {
+    e.preventDefault();
     let msg = $("#msg_text").val();
     $("#msg_text").val('');
     socket.send(JSON.stringify({
         "action": "CHAT",
-        "receiver_id": 1,
+        "receiver_id": PARTICIPANT.id,
+        "conversation_id": CONVO_ID,
         "message": msg
     }))
     return false;
 })
+
+function load_previous_chat(convo_id, page_num = 1) {
+    fetch(`/chat/conversations/detail/${convo_id}/?page=${page_num}`).
+        then(resp => {
+            return resp.json()
+        }).then(data => {
+            if (data.count) {
+                data.results.forEach(msg => {
+                    sender = msg.sender != USER.id ? 'receive' : 'sent';
+                    avatar = msg.sender != USER.id ? PARTICIPANT.avatar : USER.avatar;
+                    $("#conversation").prepend(`
+                        <div class="${sender}-msg msg" id="msg-${msg.id}">
+                            <img class="user-img" src="${avatar}">
+                            <div class="msg-content">
+                                ${msg.text}
+                                <div class="time">${msg.msg_time}</div>
+                            </div>
+                        </div>
+                    `);
+                })
+                
+            } else {
+                // remove convo as no convo found
+            }
+        })
+}
 
 function start_chat(participant_id, convo_id) {
     fetch(`/chat/participant/${participant_id}/`).
@@ -93,6 +123,7 @@ function start_chat(participant_id, convo_id) {
                 $(".chat-user").css({ "display": "flex" });
                 $("#no-chat-dialouge").hide();
                 $(".typing-section").show();
+                load_previous_chat(convo_id, 1);
             } else if (data.code == "error") {
                 $("#no-chat-dialouge").text(data.detail);
             }
@@ -105,19 +136,20 @@ function load_convo() {
             return resp.json()
         }).then(data => {
 
-            if(data.next){
+            if (data.next) {
                 $('.load_more_btn').fadeIn(300)
                 convo_pagination_page++;
-            }else{
+            } else {
                 $('.load_more_btn').fadeOut(300);
             }
 
             data.results.forEach(convo => {
-                let convo_avtar = (ID != convo.initiator.id) ? convo.initiator.avatar : convo.participant.avatar;
-                let convo_title = (ID != convo.initiator.id) ? convo.initiator.username : convo.participant.username;
+                let participant_id = (USER.id != convo.initiator.id) ? convo.initiator.id : convo.participant.id;
+                let convo_avtar = (USER.id != convo.initiator.id) ? convo.initiator.avatar : convo.participant.avatar;
+                let convo_title = (USER.id != convo.initiator.id) ? convo.initiator.username : convo.participant.username;
 
                 $("#convo-list").append(`
-                <div class="row convo" id="convo_${convo.id}">
+                <div class="row convo" id="convo_${convo.id}" onclick="start_chat(${participant_id}, ${convo.id})">
                     <div class="col-2">
                         <img src="${convo_avtar}">
                     </div>
