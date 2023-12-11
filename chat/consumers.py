@@ -3,6 +3,9 @@ import json
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 
+from chat.models import Message
+from chat.serializers import MessageSerializer
+
 
 class BaseConsumer(WebsocketConsumer):
     def __init__(self, *args, **kwargs):
@@ -37,8 +40,8 @@ class BaseConsumer(WebsocketConsumer):
             msg = " ".join(str(e).split("'")[2:-1])
             response_object = {"error": f"{msg}"}
 
-        # response_object["action"] = action
-        self.send(text_data=text_data)
+        self.send(json.dumps(response_object))
+
 
     def disconnect(self, code):
         if self.scope["user"].is_authenticated:
@@ -52,17 +55,24 @@ class BaseConsumer(WebsocketConsumer):
 
     def action_chat(self, data: dict):
         """
-            Format for action like : { "action": "CHAT", "receiver_id": "3040", "message": "hello dear"}
+            Format for action like : { "action": "CHAT", "receiver_id": "3040", "conversation_id": "219", "message": "hello dear!"}
         """
-        user_id = data.pop("receiver_id")
-        data['sender'] = self.scope["user"].id
-        async_to_sync(self.channel_layer.group_send)(
-            f"noti_{user_id}",
-            {
-                "type": "chat.notifications",
-                "data": data
-            }
+        message = Message.objects.create(
+            sender_id=self.scope["user"].id,
+            conversation_id=data["conversation_id"],
+            text=data["message"]
         )
+
+        receiver_id = data["receiver_id"]
+        message = MessageSerializer(message).data
+        message["action"] = data["action"]
+
+        async_to_sync(self.channel_layer.group_send)(
+            f"noti_{receiver_id}", {
+                "type": "chat.notifications",
+                "data": message
+            })
+        return message
 
     def chat_notifications(self, event):
         self.send(
