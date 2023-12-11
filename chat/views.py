@@ -20,10 +20,32 @@ class IndexView(LoginRequiredMixin, TemplateView):
 
 
 class MyUserAPI(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request):
         return Response(
             UserSerializer(request.user).data
         )
+        return Response({
+            "code": "success",
+            "user": UserSerializer(request.user).data
+        })
+
+
+class ParticipantAPI(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, pk=None):
+        user = User.objects.filter(id=pk)
+        if user:
+            return Response({
+                "code": "success",
+                "user": UserSerializer(user.first()).data
+            })
+        return Response({
+            "code": "error",
+            "detail": "User not found, user may be hidden OR deleted."
+        })
 
 
 class ConvoListAPI(APIView):

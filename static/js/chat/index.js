@@ -1,5 +1,6 @@
 let isResizing = false;
 let ID = null;
+let PARTICIPANT = null;
 let convo_pagination_page = 1;
 
 function startResize(e) {
@@ -26,11 +27,15 @@ fetch("/chat/my_user/").
     then(resp => {
         return resp.json()
     }).then(data => {
-        ID = data.id;
-        $("#user_profile_picture").attr("src", data.avatar);
-        $("#user_profile_picture").attr("alt", `${data.username} profile picture`);
-        $("#user_name").text(data.username);
-        $("#user_title").text("");
+        if (data.code == "success") {
+            USER = data.user;
+            $("#user_profile_picture").attr("src", USER.avatar);
+            $("#user_profile_picture").attr("alt", `${USER.username} profile picture`);
+            $("#user_name").text(USER.username);
+            $("#user_title").text("");
+        } else {
+            location.reload();
+        }
     })
 
 const socket = new WebSocket("ws://127.0.0.1:8000/ws/");
@@ -73,6 +78,26 @@ $("#msg_form").submit(e => {
     }))
     return false;
 })
+
+function start_chat(participant_id, convo_id) {
+    fetch(`/chat/participant/${participant_id}/`).
+        then(resp => {
+            return resp.json()
+        }).then(data => {
+            if (data.code == "success") {
+                PARTICIPANT = data.user;
+                CONVO_ID = convo_id;
+
+                $("#receive-user-img").attr("src", PARTICIPANT.avatar);
+                $("#receive-user-name").text(PARTICIPANT.username);
+                $(".chat-user").css({ "display": "flex" });
+                $("#no-chat-dialouge").hide();
+                $(".typing-section").show();
+            } else if (data.code == "error") {
+                $("#no-chat-dialouge").text(data.detail);
+            }
+        })
+}
 
 function load_convo() {
     fetch(`/chat/conversations/?page=${convo_pagination_page}`).
