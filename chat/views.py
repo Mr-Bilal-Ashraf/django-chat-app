@@ -60,7 +60,7 @@ class ConvoListAPI(APIView):
         ordered_conversations = conversations.order_by("-latest_message_send_at")
         paginator = self.pagination_class()
         paginated_queryset = paginator.paginate_queryset(ordered_conversations, request)
-        serializer = ConvoSerializer(paginated_queryset, many=True)
+        serializer = ConvoSerializer(paginated_queryset, many=True, context={"receiver": request.user})
         return paginator.get_paginated_response(serializer.data)
 
 

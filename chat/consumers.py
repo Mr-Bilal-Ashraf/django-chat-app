@@ -64,7 +64,7 @@ class BaseConsumer(WebsocketConsumer):
         )
 
         receiver_id = data["receiver_id"]
-        message = MessageSerializer(message).data
+        message = MessageSerializer(message, context={"user": self.scope["user"]}).data
         message["action"] = data["action"]
         message["conversation_id"] = data["conversation_id"]
 
