@@ -184,7 +184,7 @@ function start_chat(participant_id, convo_id) {
                 $(".typing-section").show();
 
                 load_previous_chat(1, true);
-                $(`#new_msg_${data.conversation_id}`).hide();
+                $(`#new_msg_${CONVO_ID}`).hide();
             } else if (data.code == "error") {
                 $("#no-chat-dialouge").text(data.detail);
             }
@@ -196,7 +196,7 @@ function load_convo() {
         then(resp => {
             return resp.json()
         }).then(data => {
-
+            console.log(data)
             if (data.next) {
                 $('.load_more_btn').fadeIn(300)
                 convo_pagination_page++;
@@ -226,8 +226,8 @@ function load_convo() {
                         <div class="msg-time" id="msg_time_${convo.id}">
                             ${convo.last_msg.msg_time}
                         </div>
-                        <span class="new-msg" id="new_msg_${convo.id}">
-                            
+                        <span class="new-msg" id="new_msg_${convo.id}" style="display: ${convo.last_msg.unseen_count ? 'inline' : 'none'};">
+                            ${convo.last_msg.unseen_count}
                         </span>
                     </div>
                 </div>
