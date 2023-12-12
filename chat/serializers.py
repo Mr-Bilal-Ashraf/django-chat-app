@@ -6,13 +6,17 @@ from user.serializers import UserSerializer
 
 class MessageSerializer(serializers.ModelSerializer):
     msg_time = serializers.SerializerMethodField()
+    unseen_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Message
-        fields = ("id", "sender", "text", "send_at", "msg_time")
+        fields = ("id", "sender", "text", "send_at", "msg_time", "unseen_count")
 
     def get_msg_time(self, obj):
         return obj.send_at.strftime("%I:%M %p")
+
+    def get_unseen_count(self, obj):
+        return obj.conversation.message_set.filter(seen=False).count()
 
 
 class ConvoSerializer(serializers.ModelSerializer):
