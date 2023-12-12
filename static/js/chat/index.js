@@ -52,6 +52,13 @@ $("#settings").on("click", () => {
 
 })
 
+function bring_conversation_to_top(convo){
+    if (convo[0] !== $("#convo-list div:first")[0]) {
+        convo.remove();
+        $("#convo-list").prepend(convo);
+    }
+}
+
 socket.addEventListener("message", e => {
     data = JSON.parse(e.data);
     if (data.action == "CHAT") {
@@ -85,8 +92,8 @@ $("#msg_form").on("submit", e => {
     return false;
 })
 
-function load_previous_chat(convo_id, page_num = 1, first = false) {
-    fetch(`/chat/conversations/detail/${convo_id}/?page=${page_num}`).
+function load_previous_chat(page_num = 1, first = false) {
+    fetch(`/chat/conversations/detail/${CONVO_ID}/?page=${page_num}`).
         then(resp => {
             return resp.json()
         }).then(data => {
@@ -124,12 +131,15 @@ function start_chat(participant_id, convo_id) {
                 PARTICIPANT = data.user;
                 CONVO_ID = convo_id;
 
+                $("#conversation").html("");
                 $("#receive-user-img").attr("src", PARTICIPANT.avatar);
                 $("#receive-user-name").text(PARTICIPANT.username);
                 $(".chat-user").css({ "display": "flex" });
                 $("#no-chat-dialouge").hide();
                 $(".typing-section").show();
-                load_previous_chat(convo_id, 1, true);
+                
+                load_previous_chat(1, true);
+                $(`#new_msg_${data.conversation_id}`).hide();
             } else if (data.code == "error") {
                 $("#no-chat-dialouge").text(data.detail);
             }
@@ -176,7 +186,6 @@ function load_convo() {
                         </span>
                     </div>
                 </div>
-                
                 `);
             });
         })
