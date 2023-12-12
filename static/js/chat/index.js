@@ -61,20 +61,60 @@ function bring_conversation_to_top(convo){
 
 socket.addEventListener("message", e => {
     data = JSON.parse(e.data);
+    console.log(data);
+
     if (data.action == "CHAT") {
-        sender = data.sender != USER.id ? 'receive' : 'sent';
-        avatar = data.sender != USER.id ? PARTICIPANT.avatar : USER.avatar;
-        $("#conversation").append(`
-            <div class="${sender}-msg msg" id="msg-${data.id}">
-                <img class="user-img" src="${avatar}">
-                <div class="msg-content">
-                    ${data.text}
-                    <div class="time">${data.msg_time}</div>
+        let convo = $(`#convo_${data.conversation_id}`);
+
+        if (PARTICIPANT && data.conversation_id == CONVO_ID) {
+            bring_conversation_to_top(convo);
+
+            sender = data.sender != USER.id ? 'receive' : 'sent';
+            avatar = data.sender != USER.id ? PARTICIPANT.avatar : USER.avatar;
+            $("#conversation").append(`
+                <div class="${sender}-msg msg" id="msg-${data.id}">
+                    <img class="user-img" src="${avatar}">
+                    <div class="msg-content">
+                        ${data.text}
+                        <div class="time">${data.msg_time}</div>
+                    </div>
                 </div>
-            </div>
-        `);
-        var offset = $("#conversation div:last").offset().top;
-        $("#conversation").animate({ scrollTop: offset }, 1000);
+            `);
+            var offset = $("#conversation div:last").offset().top;
+            $("#conversation").animate({ scrollTop: offset }, 1000);
+        } else {
+
+            if (convo.length == 0) {
+                $("#convo-list").prepend(`
+                <div class="row convo" id="convo_${data.conversation_id}" onclick="start_chat(${data.sender.id}, ${data.conversation_id})">
+                    <div class="col-2">
+                        <img src="${data.sender.avtar}">
+                    </div>
+                    <div class="col-7">
+                        <div class="name">
+                            ${data.sender.username}
+                        </div>
+                        <div class="last-msg">
+                            ${data.text}
+                        </div>
+                    </div>
+                    <div class="col-3 text-end">
+                        <div class="msg-time">
+                            ${data.msg_time}
+                        </div>
+                        <span class="new-msg" id="new_msg_${data.conversation_id}">
+                            ${data.unseen_count}
+                        </span>
+                    </div>
+                </div>
+                `);
+            }
+
+            bring_conversation_to_top(convo);
+            $(`#new_msg_${data.conversation_id}`).text(data.unseen_count);
+            $(`#new_msg_${data.conversation_id}`).show();
+            
+        }
     }
 })
 
