@@ -52,11 +52,16 @@ $("#settings").on("click", () => {
 
 })
 
-function bring_conversation_to_top(convo){
+function bring_conversation_to_top(convo) {
     if (convo[0] !== $("#convo-list div:first")[0]) {
         convo.remove();
         $("#convo-list").prepend(convo);
     }
+}
+
+function add_new_msg_details_to_convo(data) {
+    $(`#msg_time_${data.conversation_id}`).text(data.msg_time);
+    $(`#last_msg_${data.conversation_id}`).text(data.text.slice(0, 40));
 }
 
 socket.addEventListener("message", e => {
@@ -67,8 +72,6 @@ socket.addEventListener("message", e => {
         let convo = $(`#convo_${data.conversation_id}`);
 
         if (PARTICIPANT && data.conversation_id == CONVO_ID) {
-            bring_conversation_to_top(convo);
-
             sender = data.sender != USER.id ? 'receive' : 'sent';
             avatar = data.sender != USER.id ? PARTICIPANT.avatar : USER.avatar;
             $("#conversation").append(`
@@ -82,6 +85,7 @@ socket.addEventListener("message", e => {
             `);
             var offset = $("#conversation div:last").offset().top;
             $("#conversation").animate({ scrollTop: offset }, 1000);
+
         } else {
 
             if (convo.length == 0) {
@@ -94,12 +98,12 @@ socket.addEventListener("message", e => {
                         <div class="name">
                             ${data.sender.username}
                         </div>
-                        <div class="last-msg">
+                        <div class="last-msg" id="last_msg_${data.conversation_id}">
                             ${data.text}
                         </div>
                     </div>
                     <div class="col-3 text-end">
-                        <div class="msg-time">
+                        <div class="msg-time" id="msg_time_${data.conversation_id}">
                             ${data.msg_time}
                         </div>
                         <span class="new-msg" id="new_msg_${data.conversation_id}">
@@ -110,11 +114,12 @@ socket.addEventListener("message", e => {
                 `);
             }
 
-            bring_conversation_to_top(convo);
             $(`#new_msg_${data.conversation_id}`).text(data.unseen_count);
             $(`#new_msg_${data.conversation_id}`).show();
-            
+
         }
+        bring_conversation_to_top(convo);
+        add_new_msg_details_to_convo(data);
     }
 })
 
@@ -177,7 +182,7 @@ function start_chat(participant_id, convo_id) {
                 $(".chat-user").css({ "display": "flex" });
                 $("#no-chat-dialouge").hide();
                 $(".typing-section").show();
-                
+
                 load_previous_chat(1, true);
                 $(`#new_msg_${data.conversation_id}`).hide();
             } else if (data.code == "error") {
@@ -213,12 +218,12 @@ function load_convo() {
                         <div class="name">
                             ${convo_title}
                         </div>
-                        <div class="last-msg">
+                        <div class="last-msg" id="last_msg_${convo.id}">
                             ${convo.last_msg.text}
                         </div>
                     </div>
                     <div class="col-3 text-end">
-                        <div class="msg-time">
+                        <div class="msg-time" id="msg_time_${convo.id}">
                             ${convo.last_msg.msg_time}
                         </div>
                         <span class="new-msg" id="new_msg_${convo.id}">
