@@ -42,7 +42,6 @@ class BaseConsumer(WebsocketConsumer):
 
         self.send(json.dumps(response_object))
 
-
     def disconnect(self, code):
         if self.scope["user"].is_authenticated:
             # Leave room group
@@ -76,6 +75,25 @@ class BaseConsumer(WebsocketConsumer):
         return message
 
     def chat_notifications(self, event):
+        self.send(
+            text_data=json.dumps(event["data"])
+        )
+
+    def action_seen(self, data: dict):
+        """
+            Format for action like : { "action": "SEEN", "receiver_id": "3040", "conversation_id": "219"}
+        """
+        Message.objects.filter(conversation_id=data["conversation_id"]).exclude(sender=self.scope["user"]).update(
+            seen=True)
+
+        async_to_sync(self.channel_layer.group_send)(
+            f"noti_{data['receiver_id']}", {
+                "type": "chat.notifications",
+                "data": data
+            })
+        return data
+
+    def seen_notifications(self, event):
         self.send(
             text_data=json.dumps(event["data"])
         )

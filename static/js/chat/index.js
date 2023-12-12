@@ -64,6 +64,14 @@ function add_new_msg_details_to_convo(data) {
     $(`#last_msg_${data.conversation_id}`).text(data.text.slice(0, 40));
 }
 
+function mark_convo_seen() {
+    socket.send(JSON.stringify({
+        "action": "SEEN",
+        "receiver_id": PARTICIPANT.id,
+        "conversation_id": CONVO_ID,
+    }))
+}
+
 socket.addEventListener("message", e => {
     data = JSON.parse(e.data);
     console.log(data);
@@ -85,6 +93,7 @@ socket.addEventListener("message", e => {
             `);
             var offset = $("#conversation div:last").offset().top;
             $("#conversation").animate({ scrollTop: offset }, 1000);
+            mark_convo_seen();
 
         } else {
 
@@ -183,6 +192,7 @@ function start_chat(participant_id, convo_id) {
                 $("#no-chat-dialouge").hide();
                 $(".typing-section").show();
 
+                mark_convo_seen()
                 load_previous_chat(1, true);
                 $(`#new_msg_${CONVO_ID}`).hide();
             } else if (data.code == "error") {
