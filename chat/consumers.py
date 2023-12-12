@@ -66,6 +66,7 @@ class BaseConsumer(WebsocketConsumer):
         receiver_id = data["receiver_id"]
         message = MessageSerializer(message).data
         message["action"] = data["action"]
+        message["conversation_id"] = data["conversation_id"]
 
         async_to_sync(self.channel_layer.group_send)(
             f"noti_{receiver_id}", {
