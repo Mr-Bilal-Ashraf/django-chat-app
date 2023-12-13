@@ -3,6 +3,9 @@ let USER = null;
 let PARTICIPANT = null;
 let CONVO_ID = null;
 
+let host = window.location.hostname;
+let port = window.location.port;
+
 let convo_pagination_page = 1;
 
 function startResize(e) {
@@ -43,7 +46,7 @@ fetch("/chat/my_user/").
     })
 
 
-const socket = new WebSocket("ws://127.0.0.1:8000/ws/");
+const socket = new WebSocket(`ws://${host}:${port}/ws/`);
 
 
 $("#conversations").on("click", () => {
