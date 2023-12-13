@@ -11,12 +11,14 @@ function startResize(e) {
     document.addEventListener('mouseup', stopResize);
 }
 
+
 function handleMouseMove(e) {
     if (isResizing) {
         const sidebar = document.getElementById('left-container');
         sidebar.style.width = e.clientX + 'px';
     }
 }
+
 
 function stopResize() {
     isResizing = false;
@@ -40,17 +42,21 @@ fetch("/chat/my_user/").
         }
     })
 
+
 const socket = new WebSocket("ws://127.0.0.1:8000/ws/");
+
 
 $("#conversations").on("click", () => {
     $("#convo-list").slideToggle(700);
 })
+
 
 $("#settings").on("click", () => {
     $("#settings").toggleClass("rotate");
     $("#settings-content").slideToggle(500);
 
 })
+
 
 function bring_conversation_to_top(convo) {
     if (convo[0] !== $("#convo-list div:first")[0]) {
@@ -59,10 +65,12 @@ function bring_conversation_to_top(convo) {
     }
 }
 
+
 function add_new_msg_details_to_convo(data) {
     $(`#msg_time_${data.conversation_id}`).text(data.msg_time);
     $(`#last_msg_${data.conversation_id}`).text(data.text.slice(0, 40));
 }
+
 
 function mark_convo_seen() {
     socket.send(JSON.stringify({
@@ -72,63 +80,76 @@ function mark_convo_seen() {
     }))
 }
 
+
+function action_chat(data) {
+    let convo = $(`#convo_${data.conversation_id}`);
+
+    if (PARTICIPANT && data.conversation_id == CONVO_ID) {
+        sender = data.sender != USER.id ? 'receive' : 'sent';
+        avatar = data.sender != USER.id ? PARTICIPANT.avatar : USER.avatar;
+        $("#conversation").append(`
+            <div class="${sender}-msg msg" id="msg-${data.id}">
+                <img class="user-img" src="${avatar}">
+                <div class="msg-content">
+                    ${data.text}
+                    <div class="time">${data.msg_time}</div>
+                </div>
+            </div>
+        `);
+        var offset = $("#conversation div:last").offset().top;
+        $("#conversation").animate({ scrollTop: offset }, 1000);
+        mark_convo_seen();
+
+    } else {
+
+        if (convo.length == 0) {
+            $("#convo-list").prepend(`
+            <div class="row convo" id="convo_${data.conversation_id}" onclick="start_chat(${data.sender.id}, ${data.conversation_id})">
+                <div class="col-2">
+                    <img src="${data.sender.avtar}">
+                </div>
+                <div class="col-7">
+                    <div class="name">
+                        ${data.sender.username}
+                    </div>
+                    <div class="last-msg" id="last_msg_${data.conversation_id}">
+                        ${data.text}
+                    </div>
+                </div>
+                <div class="col-3 text-end">
+                    <div class="msg-time" id="msg_time_${data.conversation_id}">
+                        ${data.msg_time}
+                    </div>
+                    <span class="new-msg" id="new_msg_${data.conversation_id}">
+                        ${data.unseen_count}
+                    </span>
+                </div>
+            </div>
+            `);
+        }
+
+        $(`#new_msg_${data.conversation_id}`).text(data.unseen_count);
+        $(`#new_msg_${data.conversation_id}`).show();
+
+    }
+    bring_conversation_to_top(convo);
+    add_new_msg_details_to_convo(data);
+}
+
+
+function action_seen(data) {
+
+}
+
+
 socket.addEventListener("message", e => {
     data = JSON.parse(e.data);
     console.log(data);
 
     if (data.action == "CHAT") {
-        let convo = $(`#convo_${data.conversation_id}`);
-
-        if (PARTICIPANT && data.conversation_id == CONVO_ID) {
-            sender = data.sender != USER.id ? 'receive' : 'sent';
-            avatar = data.sender != USER.id ? PARTICIPANT.avatar : USER.avatar;
-            $("#conversation").append(`
-                <div class="${sender}-msg msg" id="msg-${data.id}">
-                    <img class="user-img" src="${avatar}">
-                    <div class="msg-content">
-                        ${data.text}
-                        <div class="time">${data.msg_time}</div>
-                    </div>
-                </div>
-            `);
-            var offset = $("#conversation div:last").offset().top;
-            $("#conversation").animate({ scrollTop: offset }, 1000);
-            mark_convo_seen();
-
-        } else {
-
-            if (convo.length == 0) {
-                $("#convo-list").prepend(`
-                <div class="row convo" id="convo_${data.conversation_id}" onclick="start_chat(${data.sender.id}, ${data.conversation_id})">
-                    <div class="col-2">
-                        <img src="${data.sender.avtar}">
-                    </div>
-                    <div class="col-7">
-                        <div class="name">
-                            ${data.sender.username}
-                        </div>
-                        <div class="last-msg" id="last_msg_${data.conversation_id}">
-                            ${data.text}
-                        </div>
-                    </div>
-                    <div class="col-3 text-end">
-                        <div class="msg-time" id="msg_time_${data.conversation_id}">
-                            ${data.msg_time}
-                        </div>
-                        <span class="new-msg" id="new_msg_${data.conversation_id}">
-                            ${data.unseen_count}
-                        </span>
-                    </div>
-                </div>
-                `);
-            }
-
-            $(`#new_msg_${data.conversation_id}`).text(data.unseen_count);
-            $(`#new_msg_${data.conversation_id}`).show();
-
-        }
-        bring_conversation_to_top(convo);
-        add_new_msg_details_to_convo(data);
+        action_chat(data);
+    } else if (data.action == "SEEN") {
+        action_seen(data);
     }
 })
 
@@ -146,10 +167,11 @@ $("#msg_form").on("submit", e => {
     return false;
 })
 
+
 function load_previous_chat(page_num = 1, first = false) {
     fetch(`/chat/conversations/detail/${CONVO_ID}/?page=${page_num}`).
         then(resp => {
-            return resp.json()
+            return resp.json();
         }).then(data => {
             if (data.count) {
                 data.results.forEach(msg => {
@@ -176,6 +198,7 @@ function load_previous_chat(page_num = 1, first = false) {
         })
 }
 
+
 function start_chat(participant_id, convo_id) {
     fetch(`/chat/participant/${participant_id}/`).
         then(resp => {
@@ -200,6 +223,7 @@ function start_chat(participant_id, convo_id) {
             }
         })
 }
+
 
 function load_convo() {
     fetch(`/chat/conversations/?page=${convo_pagination_page}`).
@@ -245,5 +269,6 @@ function load_convo() {
             });
         })
 }
+
 
 setTimeout(load_convo, 1000);
