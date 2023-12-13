@@ -33,6 +33,27 @@ function stopResize() {
 }
 
 
+function get_msg_time(date) {
+    date = new Date(date);
+    let am = null;
+    let hour = date.getHours();
+    let min = date.getMinutes();
+    min = `${min}`.length == 1 ? `0${min}` : min;
+
+    let format = hour % 12;
+    if (format >= 0 && hour > 11) {
+        hour = format == 0 ? 12 : format;
+        am = "PM";
+    } else {
+        hour = hour == 0 ? 12 : hour;
+        am = "AM";
+    }
+
+    hour = `${hour}`.length == 1 ? `0${hour}` : hour;
+    return `${hour}:${min} ${am}`
+}
+
+
 fetch("/chat/my_user/").
     then(resp => {
         return resp.json()
@@ -70,7 +91,7 @@ function bring_conversation_to_top(convo) {
 
 
 function add_new_msg_details_to_convo(data) {
-    $(`#msg_time_${data.conversation_id}`).text(data.msg_time);
+    $(`#msg_time_${data.conversation_id}`).text(get_msg_time(data.msg_timestamp));
     $(`#last_msg_${data.conversation_id}`).text(data.text.slice(0, 40));
 }
 
@@ -96,7 +117,7 @@ function action_chat(data) {
                 <div class="msg-content">
                     ${data.text}
                     <div class="time">
-                    ${data.msg_time}
+                    ${get_msg_time(data.msg_timestamp)}
                     <i class="fa-solid fa-check d-none"></i>
                     </div>
                 </div>
@@ -124,7 +145,7 @@ function action_chat(data) {
                 </div>
                 <div class="col-3 text-end">
                     <div class="msg-time" id="msg_time_${data.conversation_id}">
-                        ${data.msg_time}
+                        ${get_msg_time(data.msg_timestamp)}
                     </div>
                     <span class="new-msg" id="new_msg_${data.conversation_id}">
                         ${data.unseen_count}
@@ -194,7 +215,7 @@ function load_previous_chat(page_num = 1, first = false) {
                             <div class="msg-content">
                                 ${msg.text}
                                 <div class="time">
-                                ${msg.msg_time}
+                                ${get_msg_time(msg.msg_timestamp)}
                                 <i class="fa-solid fa-check ${msg.seen ? 'd-inline' : 'd-none'}"></i>
                                 </div>
                             </div>
@@ -256,7 +277,7 @@ function load_convo() {
                 let participant_id = (USER.id != convo.initiator.id) ? convo.initiator.id : convo.participant.id;
                 let convo_avtar = (USER.id != convo.initiator.id) ? convo.initiator.avatar : convo.participant.avatar;
                 let convo_title = (USER.id != convo.initiator.id) ? convo.initiator.username : convo.participant.username;
-                let last_msg_time = convo.last_msg.msg_time ? convo.last_msg.msg_time : "";
+                let last_msg_time = convo.last_msg.msg_timestamp ? get_msg_time(convo.last_msg.msg_timestamp) : "";
 
                 $("#convo-list").append(`
                 <div class="row convo" id="convo_${convo.id}" onclick="start_chat(${participant_id}, ${convo.id})">
