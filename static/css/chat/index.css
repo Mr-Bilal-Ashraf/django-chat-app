@@ -321,6 +321,10 @@ body {
     justify-content: start;
 }
 
+.receive-msg .fa-check {
+    display: none;
+}
+
 .receive-msg .msg-content {
     border-radius: 0px 15px 15px 15px;
     background-color: #182533;

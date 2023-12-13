@@ -175,14 +175,18 @@ function load_previous_chat(page_num = 1, first = false) {
         }).then(data => {
             if (data.count) {
                 data.results.forEach(msg => {
-                    sender = msg.sender != USER.id ? 'receive' : 'sent';
-                    avatar = msg.sender != USER.id ? PARTICIPANT.avatar : USER.avatar;
+                    let me = msg.sender != USER.id ? false : true;
+                    let sender = me ? 'receive' : 'sent';
+                    let avatar = me ? PARTICIPANT.avatar : USER.avatar;
                     $("#conversation").prepend(`
                         <div class="${sender}-msg msg" id="msg-${msg.id}">
                             <img class="user-img" src="${avatar}">
                             <div class="msg-content">
                                 ${msg.text}
-                                <div class="time">${msg.msg_time}</div>
+                                <div class="time">
+                                ${msg.msg_time}
+                                <i class="fa-solid fa-check" style="display: ${msg.seen ? 'block' : 'none'};"></i>
+                                </div>
                             </div>
                         </div>
                     `);
