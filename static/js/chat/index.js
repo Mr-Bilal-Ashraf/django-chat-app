@@ -8,6 +8,9 @@ let port = window.location.port;
 
 let convo_pagination_page = 1;
 
+const socket = new WebSocket(`ws://${host}:${port}/ws/`);
+
+
 function startResize(e) {
     isResizing = true;
     document.addEventListener('mousemove', handleMouseMove);
@@ -44,9 +47,6 @@ fetch("/chat/my_user/").
             location.reload();
         }
     })
-
-
-const socket = new WebSocket(`ws://${host}:${port}/ws/`);
 
 
 $("#conversations").on("click", () => {
@@ -144,7 +144,7 @@ function action_chat(data) {
 
 
 function action_seen(data) {
-    if (PARTICIPANT && data.conversation_id == CONVO_ID) {
+    if (PARTICIPANT && data.conversation_id == CONVO_ID && data.receiver_id == USER.id) {
         $(".time .fa-check.d-none").addClass('d-inline');
         $(".time .fa-check.d-none").removeClass('d-none');
     }
@@ -256,6 +256,7 @@ function load_convo() {
                 let participant_id = (USER.id != convo.initiator.id) ? convo.initiator.id : convo.participant.id;
                 let convo_avtar = (USER.id != convo.initiator.id) ? convo.initiator.avatar : convo.participant.avatar;
                 let convo_title = (USER.id != convo.initiator.id) ? convo.initiator.username : convo.participant.username;
+                let last_msg_time = convo.last_msg.msg_time ? convo.last_msg.msg_time : "";
 
                 $("#convo-list").append(`
                 <div class="row convo" id="convo_${convo.id}" onclick="start_chat(${participant_id}, ${convo.id})">
@@ -272,7 +273,7 @@ function load_convo() {
                     </div>
                     <div class="col-3 text-end">
                         <div class="msg-time" id="msg_time_${convo.id}">
-                            ${convo.last_msg.msg_time}
+                            ${last_msg_time}
                         </div>
                         <span class="new-msg" id="new_msg_${convo.id}" style="display: ${convo.last_msg.unseen_count ? 'inline' : 'none'};">
                             ${convo.last_msg.unseen_count}
