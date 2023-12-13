@@ -1,0 +1,384 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    font-family: Helvetica;
+}
+
+body {
+    background: #17212b;
+    overflow-y: hidden;
+}
+
+.heading-color {
+    color: #565656;
+}
+
+.main-container {
+    width: 100%;
+    height: 100vh;
+}
+
+#left-container {
+    border: 1px solid #0e1621;
+    position: relative;
+    min-width: 27%;
+    max-width: 35%;
+}
+
+#resizable-handle {
+    background-color: #bcbcbc;
+    position: absolute;
+    cursor: ew-resize;
+    display: none;
+    height: 100%;
+    width: 2px;
+    right: 0;
+    top: 0;
+}
+
+#sidebar-content {
+    max-height: calc(100vh - 120px);
+    height: calc(100vh - 120px);
+    scroll-behavior: smooth;
+    position: relative;
+    overflow-y: auto;
+    z-index: 1;
+}
+
+#sidebar-content::-webkit-scrollbar {
+    width: 5px;
+}
+
+#sidebar-content::-webkit-scrollbar-thumb {
+    background: #565656;
+    border-radius: 30px;
+}
+
+.profile {
+    margin: 20px 10px;
+}
+
+.profile img {
+    object-fit: cover;
+    width: 80px;
+    height: 80px;
+    border-radius: 100px;
+}
+
+.active-user {
+    border: 3px solid #26d326;
+}
+
+.unactive-user {
+    border: 3px solid #8f8f8f;
+}
+
+.profile .name {
+    text-transform: capitalize;
+    color: #f5f5f5;
+    font-weight: 700;
+}
+
+.profile .rank {
+    font-size: 14px;
+}
+
+.profile #settings {
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.rotate {
+    transform: rotate(180deg);
+}
+
+#settings-content {
+    background-color: #d7d7d7;
+    scroll-behavior: smooth;
+    position: absolute;
+    overflow-y: auto;
+    display: none;
+    height: 100%;
+    width: 99%;
+    z-index: 10;
+}
+
+.setting-btn {
+    border: 1px solid #565656;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.load_more_btn {
+    padding: .375rem 2.75rem;
+    border-radius: 15px;
+    display: none;
+}
+
+.search {
+    width: 85%;
+}
+
+.search input {
+    border-top-left-radius: 50px;
+    border-end-start-radius: 50px;
+    background-color: #242f3d;
+    border: 1px solid #242f3d;
+    color: #748597;
+}
+
+.search input:focus {
+    background-color: #242f3d;
+    border: 1px solid #242f3d;
+    color: #748597;
+    box-shadow: none;
+    outline: none;
+}
+
+
+.search span {
+    border-top-right-radius: 50px;
+    border-end-end-radius: 50px;
+    background-color: #6c7883;
+    border: 1px solid #6c7883;
+}
+
+.fa-gear {
+    color: #6c7883;
+}
+
+#convo-list {
+    margin: 0 10px;
+}
+
+.convo {
+    width: 100%;
+    margin: 12px auto;
+    line-height: 25px;
+    padding: 5px 0px;
+    cursor: pointer;
+    transition: 0.1s;
+}
+
+.convo-separator {
+    border-bottom: 1px solid #c2c2c2;
+    display: block;
+    margin: 0 auto;
+    width: 75%;
+}
+
+.convo img,
+.chat-user img {
+    object-fit: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 100px;
+}
+
+.convo .name {
+    text-transform: capitalize;
+    color: #f5f5f5;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.convo .last-msg {
+    color: #748597;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 13px;
+}
+
+.convo .msg-time {
+    color: #748597;
+    font-size: 13px;
+}
+
+#new-msgs {
+    display: none;
+}
+
+.convo .new-msg {
+    background-color: #4789ff;
+    border-radius: 12px;
+    padding: 4px 8px;
+    font-size: 13px;
+    color: #fff;
+}
+
+.convo-notification {
+    font-size: 12px;
+    background-color: #4789ff;
+    padding: 3px 8px;
+    border-radius: 12px;
+    color: #fff;
+}
+
+.side-btn {
+    border: 1px solid #748597;
+    border-radius: 10px;
+    margin: 10px 5px;
+    color: #f5f5f5;
+    cursor: pointer;
+    padding: 15px;
+    transition: 0.1s;
+}
+
+.side-btn:hover,
+.convo:hover {
+    background-color: #263544;
+    border-radius: 6px;
+}
+
+
+/* Right side styling starts here */
+
+
+#right-container {
+    background-color: #0e1621;
+    width: 100%;
+}
+
+#no-chat-dialouge {
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+    width: fit-content;
+    padding: 6px 15px;
+    color: #e8e8e8;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}
+
+.chat-user {
+    border: 1px solid #0e1621;
+    background: #17212b;
+    padding: 0px 15px;
+    display: none;
+}
+
+#receive-user-name {
+    color: #f5f5f5;
+    text-transform: capitalize;
+}
+
+.chat-user .img {
+    padding: 10px;
+}
+
+.chat-user .img img {
+    width: 60px;
+    height: 60px;
+}
+
+.chat-section {
+    height: calc(100vh - 83px);
+}
+
+#conversation {
+    padding: 0px 15px 10px 20px;
+    padding-bottom: 10px;
+    overflow-y: scroll;
+    height: 90%;
+}
+
+#conversation .user-img {
+    border-radius: 100px;
+    object-fit: cover;
+    height: 30px;
+    width: 30px;
+}
+
+#conversation .msg-day {
+    margin: 15px auto;
+    width: max-content;
+    background: #1e2c3a;
+    padding: 10px 40px;
+    border-radius: 15px;
+    color: #e8e8e8;
+}
+
+.msg {
+    display: flex;
+    align-items: baseline;
+}
+
+.msg .time {
+    font-size: 12px;
+    text-align: end;
+}
+
+.msg-content {
+    width: fit-content;
+    padding: 10px 20px;
+    color: #e8e8e8;
+    margin: 8px 10px;
+    max-width: 60%;
+}
+
+.receive-msg {
+    justify-content: start;
+}
+
+.receive-msg .fa-check {
+    display: none !important;
+}
+
+.receive-msg .msg-content {
+    border-radius: 0px 15px 15px 15px;
+    background-color: #182533;
+}
+
+.sent-msg {
+    justify-content: end;
+    flex-direction: row-reverse;
+}
+
+.sent-msg .msg-content {
+    background-color: #2b5278;
+    border-radius: 15px 0px 15px 15px;
+}
+
+#conversation::-webkit-scrollbar {
+    width: 5px;
+}
+
+#conversation::-webkit-scrollbar-thumb {
+    background: #565656;
+    border-radius: 30px;
+}
+
+.typing-section {
+    border: 1px solid #0e1621;
+    padding: 0 20px;
+    display: none;
+}
+
+.typing-section input {
+    border-radius: 17px;
+    margin-top: 15px;
+    border: 1px solid #ccc;
+    padding: 10px 15px;
+    line-height: 35px;
+    color: #565656;
+    flex: 1;
+}
+
+.typing-section input:focus {
+    outline: none;
+    box-shadow: none;
+    color: #565656;
+}
+
+.typing-section img {
+    background: transparent;
+    padding-top: 15px;
+    border: none;
+}
+
+.typing-section button {
+    cursor: pointer;
+    background: transparent;
+    border: none;
+}

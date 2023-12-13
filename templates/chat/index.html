@@ -1,13 +1,185 @@
+{% load static %}
 <!doctype html>
+
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="{% static 'css/chat/index.css' %}">
+
     <title>Document</title>
 </head>
+
 <body>
-    Index Page
+    <!-- Main container starts here -->
+    <div class="d-flex main-container">
+
+        <!-- Left container starts here -->
+        <div id="left-container">
+            <div id="resizable-handle" onmousedown="startResize(event)"></div>
+
+            <!-- User profile -->
+            <div class="profile row align-items-center">
+                <div class="col-3">
+                    <img id="user_profile_picture" src="">
+                </div>
+                <div class="col-8" style="line-height: 0px;">
+                    <div class="h3 name" id="user_name">
+                        
+                    </div>
+                    <div class="rank heading-color" id="user_title">
+                        
+                    </div>
+                </div>
+                <div class="col-1">
+                    <i class="fa-solid fa-gear fa-lg" id="settings"></i>
+                </div>
+            </div>
+
+            <!-- content section -->
+            <div id="sidebar-content">
+
+                <!-- Settings -->
+                <div id="settings-content">
+                    <div class="h2 p-3">
+                        Settings
+                    </div>
+                    <div class="row mx-3">
+                        <div class="col-12 col-sm-6 setting-btn d-flex justify-content-between">
+                            <div>
+                                Sign Out
+                            </div>
+                            <div>
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 setting-btn d-flex justify-content-between">
+                            <div>
+                                Sign Out
+                            </div>
+                            <div>
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="input-group my-4 mx-auto search">
+                    <input type="text" class="form-control" placeholder="Search Friends">
+                    <span class="input-group-text">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                </div>
+
+                <!-- Conversations Button -->
+                <div class="side-btn d-flex justify-content-between" id="conversations">
+                    <div>Conversations</div>
+                    <div class="convo-notification" id="new-msgs"></div>
+                </div>
+
+                <!-- Friends List -->
+                <div id="convo-list">
+                    <!-- <div class="row convo" id="convo_1">
+                        <div class="col-2">
+                            <img src="{% static 'imgs/user/user.png' %}">
+                        </div>
+                        <div class="col-7">
+                            <div class="name">
+                                Charles Xavier
+                            </div>
+                            <div class="last-msg heading-color" id="last_msg_1">
+                                Our boat, the Sunseeker.
+                            </div>
+                        </div>
+                        <div class="col-3 text-end">
+                            <div class="msg-time" id="msg_time_1">
+                                10:34 AM
+                            </div>
+                            <span class="new-msg" id="new_msg_1">
+                                
+                            </span>
+                        </div>
+                    </div>
+                    <convo-separator class="convo-separator"></convo-separator> -->
+
+                </div>
+                <div class="text-center pt-2">
+                    <button class="btn btn-primary load_more_btn" onclick="load_convo()">load more</button>
+                </div>
+
+                <!-- Requests Button -->
+                <div class="side-btn d-flex justify-content-between">
+                    <div>Requests</div>
+                    <div class="convo-notification">2</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right container starts here -->
+        <div id="right-container">
+            <div id="no-chat-dialouge">Select a chat to start messaging</div>
+
+            <!-- user name to chat  -->
+            <div class="align-items-center justify-content-start chat-user">
+                <div class="img">
+                    <img src="/media/avatars/profile_6.webp" id="receive-user-img">
+                </div>
+                <div class="h4 px-2" id="receive-user-name">
+                    Jade_raymond
+                </div>
+            </div>
+
+            <div class="chat-section">
+                <div id="conversation">
+                    
+                    <!-- <div class="msg-day">
+                        26 Oct 2023
+                    </div>
+                    <div class="receive-msg msg">
+                        <img class="user-img" src="/media/avatars/profile_6.webp">
+                        <div class="msg-content">
+                            n publishing and graphic design, Lorem ipsum is a placeholder text commonly used to
+                            demonstrate the visual form of a document or a typeface without relying on meaningful
+                            content. Lorem ipsum may be used as a placeholder before final copy is available
+                            <div class="time">07:30 pm</div>
+                        </div>
+                    </div>
+                    <div class="sent-msg msg">
+                        <img class="user-img" src="/media/avatars/bili_2.jpg">
+                        <div class="msg-content">
+                            n publishing and graphic design, Lorem ipsum is a placeholder text commonly used to
+                            demonstrate the visual form of a document or a typeface without relying on meaningful
+                            content. Lorem ipsum may be used as a placeholder before final copy is available
+                        </div>
+                    </div> -->
+                </div>
+
+                <div class="typing-section">
+                    <form id="msg_form" class="d-flex align-items-center">
+                        <input type="text" id="msg_text" placeholder="Write Something">
+                        <button type="submit">
+                            <img class="input-group-text" src="{% static 'imgs/chat/send.png' %}">
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/chat/index.js' %}"></script>
+
 </html>

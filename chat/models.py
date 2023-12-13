@@ -23,6 +23,7 @@ class Message(models.Model):
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
     text = models.TextField(blank=True)
     send_at = models.DateTimeField(auto_now_add=True)
+    seen = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.sender} - {self.text} ({self.send_at})"
