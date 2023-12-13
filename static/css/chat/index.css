@@ -322,7 +322,7 @@ body {
 }
 
 .receive-msg .fa-check {
-    display: none;
+    display: none !important;
 }
 
 .receive-msg .msg-content {

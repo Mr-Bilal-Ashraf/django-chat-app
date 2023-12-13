@@ -92,7 +92,10 @@ function action_chat(data) {
                 <img class="user-img" src="${avatar}">
                 <div class="msg-content">
                     ${data.text}
-                    <div class="time">${data.msg_time}</div>
+                    <div class="time">
+                    ${data.msg_time}
+                    <i class="fa-solid fa-check d-none"></i>
+                    </div>
                 </div>
             </div>
         `);
@@ -138,7 +141,10 @@ function action_chat(data) {
 
 
 function action_seen(data) {
-
+    if (PARTICIPANT && data.conversation_id == CONVO_ID) {
+        $(".time .fa-check.d-none").addClass('d-inline');
+        $(".time .fa-check.d-none").removeClass('d-none');
+    }
 }
 
 
@@ -173,11 +179,12 @@ function load_previous_chat(page_num = 1, first = false) {
         then(resp => {
             return resp.json();
         }).then(data => {
+            console.log(data)
             if (data.count) {
                 data.results.forEach(msg => {
                     let me = msg.sender != USER.id ? false : true;
-                    let sender = me ? 'receive' : 'sent';
-                    let avatar = me ? PARTICIPANT.avatar : USER.avatar;
+                    let sender = me ? 'sent' : 'receive';
+                    let avatar = me ? USER.avatar : PARTICIPANT.avatar;
                     $("#conversation").prepend(`
                         <div class="${sender}-msg msg" id="msg-${msg.id}">
                             <img class="user-img" src="${avatar}">
@@ -185,7 +192,7 @@ function load_previous_chat(page_num = 1, first = false) {
                                 ${msg.text}
                                 <div class="time">
                                 ${msg.msg_time}
-                                <i class="fa-solid fa-check" style="display: ${msg.seen ? 'block' : 'none'};"></i>
+                                <i class="fa-solid fa-check ${msg.seen ? 'd-inline' : 'd-none'}"></i>
                                 </div>
                             </div>
                         </div>
