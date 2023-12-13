@@ -10,7 +10,7 @@ class MessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Message
-        fields = ("id", "sender", "text", "send_at", "msg_time", "unseen_count")
+        fields = ("id", "sender", "text", "seen", "send_at", "msg_time", "unseen_count")
 
     def get_msg_time(self, obj):
         return obj.send_at.strftime("%I:%M %p")
