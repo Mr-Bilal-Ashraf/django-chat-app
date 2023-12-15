@@ -71,6 +71,17 @@ function get_msg_day(date) {
 }
 
 
+function get_convo_msg_time(date) {
+    rdate = new Date(date);
+    today = new Date();
+    if (rdate.toDateString() == today.toDateString()) {
+        return get_msg_time(date)
+    } else {
+        return get_msg_day(date)
+    }
+}
+
+
 fetch("/chat/my_user/").
     then(resp => {
         return resp.json()
@@ -259,7 +270,7 @@ function load_previous_chat(page_num = 1, first = false) {
                     `);
 
                 })
-                
+
                 if (!$(`#id_${last_msg_day}`).length) {
                     $("#conversation").prepend(`
                             <div class="msg-day" id="id_${last_msg_day}">
@@ -323,7 +334,7 @@ function load_convo() {
                 let participant_id = (USER.id != convo.initiator.id) ? convo.initiator.id : convo.participant.id;
                 let convo_avtar = (USER.id != convo.initiator.id) ? convo.initiator.avatar : convo.participant.avatar;
                 let convo_title = (USER.id != convo.initiator.id) ? convo.initiator.username : convo.participant.username;
-                let last_msg_time = convo.last_msg.msg_timestamp ? get_msg_time(convo.last_msg.msg_timestamp) : "";
+                let last_msg_time = convo.last_msg.msg_timestamp ? get_convo_msg_time(convo.last_msg.msg_timestamp) : "";
 
                 $("#convo-list").append(`
                 <div class="row convo" id="convo_${convo.id}" onclick="start_chat(${participant_id}, ${convo.id})">
