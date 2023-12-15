@@ -2,6 +2,7 @@ let isResizing = false;
 let USER = null;
 let PARTICIPANT = null;
 let CONVO_ID = null;
+let last_msg_day = null;
 
 let host = window.location.hostname;
 let port = window.location.port;
@@ -225,6 +226,17 @@ function load_previous_chat(page_num = 1, first = false) {
                     let me = msg.sender != USER.id ? false : true;
                     let sender = me ? 'sent' : 'receive';
                     let avatar = me ? USER.avatar : PARTICIPANT.avatar;
+                    let msg_day = get_msg_day(msg.msg_timestamp);
+
+                    if (msg_day != last_msg_day) {
+                        $("#conversation").prepend(`
+                            <div class="msg-day" id="id_${last_msg_day}">
+                                ${last_msg_day}
+                            </div>
+                        `);
+                        last_msg_day = msg_day;
+                    }
+
                     $("#conversation").prepend(`
                         <div class="${sender}-msg msg" id="msg-${msg.id}">
                             <img class="user-img" src="${avatar}">
@@ -237,7 +249,17 @@ function load_previous_chat(page_num = 1, first = false) {
                             </div>
                         </div>
                     `);
+
                 })
+                
+                if (!$(`#id_${last_msg_day}`).length) {
+                    $("#conversation").prepend(`
+                            <div class="msg-day" id="id_${last_msg_day}">
+                                ${last_msg_day}
+                            </div>
+                        `);
+                }
+
                 if (first) {
                     var offset = $("#conversation div:last").offset().top;
                     $("#conversation").animate({ scrollTop: offset }, 1000);
