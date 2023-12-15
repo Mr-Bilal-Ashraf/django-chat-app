@@ -54,6 +54,22 @@ function get_msg_time(date) {
 }
 
 
+function get_msg_day(date) {
+    date = new Date(date);
+    today = new Date();
+    if (date.toDateString() == today.toDateString()) {
+        return "Today"
+    } else if (date.getDate() == (today.getDate() - 1) && date.getMonth() == today.getMonth()) {
+        return "Yesterday"
+    } else {
+        day = date.getDate();
+        month = date.toLocaleString('default', { month: 'short' });
+        year = date.getFullYear()
+        return `${day}-${month}-${year}`
+    }
+}
+
+
 fetch("/chat/my_user/").
     then(resp => {
         return resp.json()
