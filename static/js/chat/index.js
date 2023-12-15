@@ -221,6 +221,14 @@ function load_previous_chat(page_num = 1, first = false) {
             return resp.json();
         }).then(data => {
             console.log(data)
+            if (first && data.count) {
+                last_msg_day = get_msg_day(data.results[0].msg_timestamp);
+            }
+
+            if (!first && data.count && $(`#id_${last_msg_day}`).length) {
+                $(`#id_${last_msg_day}`).remove();
+            }
+
             if (data.count) {
                 data.results.forEach(msg => {
                     let me = msg.sender != USER.id ? false : true;
