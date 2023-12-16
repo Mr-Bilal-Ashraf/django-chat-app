@@ -120,7 +120,7 @@ function bring_conversation_to_top(convo) {
 
 
 function add_new_msg_details_to_convo(data) {
-    $(`#msg_time_${data.conversation_id}`).text(get_msg_time(data.msg_timestamp));
+    $(`#msg_time_${data.conversation_id}`).text(get_msg_time(data.send_at));
     $(`#last_msg_${data.conversation_id}`).text(data.text.slice(0, 40));
 }
 
@@ -146,7 +146,7 @@ function action_chat(data) {
                 <div class="msg-content">
                     ${data.text}
                     <div class="time">
-                    ${get_msg_time(data.msg_timestamp)}
+                    ${get_msg_time(data.send_at)}
                     <i class="fa-solid fa-check d-none"></i>
                     </div>
                 </div>
@@ -174,7 +174,7 @@ function action_chat(data) {
                 </div>
                 <div class="col-3 text-end">
                     <div class="msg-time" id="msg_time_${data.conversation_id}">
-                        ${get_msg_time(data.msg_timestamp)}
+                        ${get_msg_time(data.send_at)}
                     </div>
                     <span class="new-msg" id="new_msg_${data.conversation_id}">
                         ${data.unseen_count}
@@ -234,7 +234,7 @@ function load_previous_chat(first = false) {
         }).then(data => {
             console.log(data)
             if (first && data.count) {
-                last_msg_day = get_msg_day(data.results[0].msg_timestamp);
+                last_msg_day = get_msg_day(data.results[0].send_at);
             }
 
             if (!first && data.count && $(`#id_${last_msg_day}`).length) {
@@ -251,7 +251,7 @@ function load_previous_chat(first = false) {
                     let me = msg.sender != USER.id ? false : true;
                     let sender = me ? 'sent' : 'receive';
                     let avatar = me ? USER.avatar : PARTICIPANT.avatar;
-                    let msg_day = get_msg_day(msg.msg_timestamp);
+                    let msg_day = get_msg_day(msg.send_at);
 
                     if (msg_day != last_msg_day) {
                         $("#conversation").prepend(`
@@ -268,7 +268,7 @@ function load_previous_chat(first = false) {
                             <div class="msg-content">
                                 ${msg.text}
                                 <div class="time">
-                                ${get_msg_time(msg.msg_timestamp)}
+                                ${get_msg_time(msg.send_at)}
                                 <i class="fa-solid fa-check ${msg.seen ? 'd-inline' : 'd-none'}"></i>
                                 </div>
                             </div>
@@ -351,7 +351,7 @@ function load_convo() {
                 let participant_id = (USER.id != convo.initiator.id) ? convo.initiator.id : convo.participant.id;
                 let convo_avtar = (USER.id != convo.initiator.id) ? convo.initiator.avatar : convo.participant.avatar;
                 let convo_title = (USER.id != convo.initiator.id) ? convo.initiator.username : convo.participant.username;
-                let last_msg_time = convo.last_msg.msg_timestamp ? get_convo_msg_time(convo.last_msg.msg_timestamp) : "";
+                let last_msg_time = convo.last_msg.send_at ? get_convo_msg_time(convo.last_msg.send_at) : "";
 
                 $("#convo-list").append(`
                 <div class="row convo" id="convo_${convo.id}" onclick="start_chat(${participant_id}, ${convo.id})">

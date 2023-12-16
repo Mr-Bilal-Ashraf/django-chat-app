@@ -11,7 +11,6 @@ class User(AbstractUser):
     email = models.EmailField(_("email address"), unique=True)
     avatar = models.ImageField(upload_to="avatars/", blank=True, null=True)
     friends = models.ManyToManyField("self", blank=True)
-    time_zone = models.CharField(max_length=40, default="UTC")
 
     first_name = None
     last_name = None
