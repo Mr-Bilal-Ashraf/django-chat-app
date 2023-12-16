@@ -65,7 +65,7 @@ $("#sign_in").submit(() => {
             $("#sign_in_error").fadeIn(300);
         }
     })
-    
+
     return false;
 })
 

@@ -5,15 +5,11 @@ from user.serializers import UserSerializer
 
 
 class MessageSerializer(serializers.ModelSerializer):
-    msg_time = serializers.SerializerMethodField()
     unseen_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Message
-        fields = ("id", "sender", "text", "seen", "send_at", "msg_time", "unseen_count")
-
-    def get_msg_time(self, obj):
-        return obj.send_at.strftime("%I:%M %p")
+        fields = ("id", "sender", "text", "seen", "unseen_count", "send_at")
 
     def get_unseen_count(self, obj):
         if self.context.get("user"):
