@@ -152,8 +152,7 @@ function action_chat(data) {
                 </div>
             </div>
         `);
-        var offset = $("#conversation div:last").offset().top;
-        $("#conversation").animate({ scrollTop: offset }, 1000);
+        document.getElementById(`msg-${data.id}`).scrollIntoView({ behavior: 'smooth' });
         mark_convo_seen();
 
     } else {
@@ -296,8 +295,7 @@ function load_previous_chat(first = false) {
                 }
 
                 if (first) {
-                    var offset = $("#conversation div:last").offset().top;
-                    $("#conversation").animate({ scrollTop: offset }, 1000);
+                    document.querySelector("#conversation div.msg:last-child").scrollIntoView({behavior: 'smooth'});
                 }
 
             } else {
