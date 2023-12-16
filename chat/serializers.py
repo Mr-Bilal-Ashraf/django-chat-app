@@ -13,9 +13,15 @@ class MessageSerializer(serializers.ModelSerializer):
 
     def get_unseen_count(self, obj):
         if self.context.get("user"):
-            return obj.conversation.message_set.filter(seen=False, sender=self.context.get("user")).count()
+            return obj.conversation.message_set.filter(
+                seen=False, sender=self.context.get("user")
+            ).count()
         elif self.context.get("receiver"):
-            return obj.conversation.message_set.filter(seen=False).exclude(sender=self.context.get("receiver")).count()
+            return (
+                obj.conversation.message_set.filter(seen=False)
+                .exclude(sender=self.context.get("receiver"))
+                .count()
+            )
         return obj.conversation.message_set.filter(seen=False).count()
 
 

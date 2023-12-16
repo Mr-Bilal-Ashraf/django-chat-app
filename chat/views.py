@@ -24,10 +24,7 @@ class MyUserAPI(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
-        return Response({
-            "code": "success",
-            "user": UserSerializer(request.user).data
-        })
+        return Response({"code": "success", "user": UserSerializer(request.user).data})
 
 
 class ParticipantAPI(APIView):
@@ -36,14 +33,15 @@ class ParticipantAPI(APIView):
     def get(self, request, pk=None):
         user = User.objects.filter(id=pk)
         if user:
-            return Response({
-                "code": "success",
-                "user": UserSerializer(user.first()).data
-            })
-        return Response({
-            "code": "error",
-            "detail": "User not found, user may be hidden OR deleted."
-        })
+            return Response(
+                {"code": "success", "user": UserSerializer(user.first()).data}
+            )
+        return Response(
+            {
+                "code": "error",
+                "detail": "User not found, user may be hidden OR deleted.",
+            }
+        )
 
 
 class ConvoListAPI(APIView):
@@ -52,15 +50,14 @@ class ConvoListAPI(APIView):
 
     def get(self, request):
         conversations = Conversation.objects.filter(
-            Q(initiator=request.user) |
-            Q(participant=request.user)
-        ).annotate(
-            latest_message_send_at=Max("message__send_at")
-        )
+            Q(initiator=request.user) | Q(participant=request.user)
+        ).annotate(latest_message_send_at=Max("message__send_at"))
         ordered_conversations = conversations.order_by("-latest_message_send_at")
         paginator = self.pagination_class()
         paginated_queryset = paginator.paginate_queryset(ordered_conversations, request)
-        serializer = ConvoSerializer(paginated_queryset, many=True, context={"receiver": request.user})
+        serializer = ConvoSerializer(
+            paginated_queryset, many=True, context={"receiver": request.user}
+        )
         return paginator.get_paginated_response(serializer.data)
 
 
@@ -77,7 +74,4 @@ class ConvoDetailAPI(APIView):
             serializer = MessageSerializer(paginated_queryset, many=True)
             return paginator.get_paginated_response(serializer.data)
         else:
-            return Response({
-                "code": "error",
-                "detail": "No conversation found."
-            })
+            return Response({"code": "error", "detail": "No conversation found."})

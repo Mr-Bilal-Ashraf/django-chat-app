@@ -54,12 +54,12 @@ class BaseConsumer(WebsocketConsumer):
 
     def action_chat(self, data: dict):
         """
-            Format for action like : { "action": "CHAT", "receiver_id": "3040", "conversation_id": "219", "message": "hello dear!"}
+        Format for action like : { "action": "CHAT", "receiver_id": "3040", "conversation_id": "219", "message": "hello dear!"}
         """
         message = Message.objects.create(
             sender_id=self.scope["user"].id,
             conversation_id=data["conversation_id"],
-            text=data["message"]
+            text=data["message"],
         )
 
         receiver_id = data["receiver_id"]
@@ -68,46 +68,36 @@ class BaseConsumer(WebsocketConsumer):
         message["conversation_id"] = data["conversation_id"]
 
         async_to_sync(self.channel_layer.group_send)(
-            f"noti_{receiver_id}", {
-                "type": "chat.notifications",
-                "data": message
-            })
+            f"noti_{receiver_id}", {"type": "chat.notifications", "data": message}
+        )
         return message
 
     def chat_notifications(self, event):
-        self.send(
-            text_data=json.dumps(event["data"])
-        )
+        self.send(text_data=json.dumps(event["data"]))
 
     def action_seen(self, data: dict):
         """
-            Format for action like : { "action": "SEEN", "receiver_id": "3040", "conversation_id": "219"}
+        Format for action like : { "action": "SEEN", "receiver_id": "3040", "conversation_id": "219"}
         """
-        Message.objects.filter(conversation_id=data["conversation_id"]).exclude(sender=self.scope["user"]).update(
-            seen=True)
+        Message.objects.filter(conversation_id=data["conversation_id"]).exclude(
+            sender=self.scope["user"]
+        ).update(seen=True)
 
         async_to_sync(self.channel_layer.group_send)(
-            f"noti_{data['receiver_id']}", {
-                "type": "chat.notifications",
-                "data": data
-            })
+            f"noti_{data['receiver_id']}", {"type": "chat.notifications", "data": data}
+        )
         return data
 
     def seen_notifications(self, event):
-        self.send(
-            text_data=json.dumps(event["data"])
-        )
+        self.send(text_data=json.dumps(event["data"]))
 
     def action_gloabl_notification(self, data: dict):
         """
-            Format for action like : { "action": "GLOBAL_NOTIFICATIONS", "notification": "bala bala bala"}
+        Format for action like : { "action": "GLOBAL_NOTIFICATIONS", "notification": "bala bala bala"}
         """
         async_to_sync(self.channel_layer.group_send)(
             self.global_notifications_group,
-            {
-                "type": "global.notification",
-                "data": data
-            }
+            {"type": "global.notification", "data": data},
         )
 
     def global_notification(self, event):
