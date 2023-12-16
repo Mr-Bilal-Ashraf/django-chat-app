@@ -8,6 +8,7 @@ let host = window.location.hostname;
 let port = window.location.port;
 
 let convo_pagination_page = 1;
+let chat_pagination_page = 1;
 
 const socket = new WebSocket(`ws://${host}:${port}/ws/`);
 
@@ -226,8 +227,8 @@ $("#msg_form").on("submit", e => {
 })
 
 
-function load_previous_chat(page_num = 1, first = false) {
-    fetch(`/chat/conversations/detail/${CONVO_ID}/?page=${page_num}`).
+function load_previous_chat(first = false) {
+    fetch(`/chat/conversations/detail/${CONVO_ID}/?page=${chat_pagination_page++}`).
         then(resp => {
             return resp.json();
         }).then(data => {
@@ -238,6 +239,11 @@ function load_previous_chat(page_num = 1, first = false) {
 
             if (!first && data.count && $(`#id_${last_msg_day}`).length) {
                 $(`#id_${last_msg_day}`).remove();
+            }
+
+            let load_chat_btn = $("#load_chat_btn");
+            if (load_chat_btn.length) {
+                load_chat_btn.remove();
             }
 
             if (data.count) {
@@ -279,6 +285,16 @@ function load_previous_chat(page_num = 1, first = false) {
                         `);
                 }
 
+                if (data.next) {
+                    $("#conversation").prepend(`
+                        <div class="text-center pt-2">
+                            <button class="btn btn-primary load_more_btn d-inline" onclick="load_previous_chat()" id="load_chat_btn">
+                                load more
+                            </button>
+                        </div>
+                    `);
+                }
+
                 if (first) {
                     var offset = $("#conversation div:last").offset().top;
                     $("#conversation").animate({ scrollTop: offset }, 1000);
@@ -308,7 +324,8 @@ function start_chat(participant_id, convo_id) {
                 $(".typing-section").show();
 
                 mark_convo_seen()
-                load_previous_chat(1, true);
+                chat_pagination_page = 1;
+                load_previous_chat(true);
                 $(`#new_msg_${CONVO_ID}`).hide();
             } else if (data.code == "error") {
                 $("#no-chat-dialouge").text(data.detail);
