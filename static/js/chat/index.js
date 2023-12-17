@@ -192,13 +192,30 @@ socket.addEventListener("message", e => {
 $("#msg_form").on("submit", e => {
     e.preventDefault();
     let msg = $("#msg_text").val();
-    $("#msg_text").val('');
-    socket.send(JSON.stringify({
-        "action": "CHAT",
-        "receiver_id": PARTICIPANT.id,
-        "conversation_id": CONVO_ID,
-        "message": msg
-    }))
+    if (msg.length) {
+        $("#msg_text").val('');
+        socket.send(JSON.stringify({
+            "action": "CHAT",
+            "receiver_id": PARTICIPANT.id,
+            "conversation_id": CONVO_ID,
+            "message": msg
+        }))
+    } else {
+        if (!$(".empty-msg").length) {
+            let p_ab = $(".msg").length < 10 ? "position-absolute" : ""
+            $("#conversation").append(`
+                <div class="empty-msg ${p_ab}">
+                    You can't send an empty message.
+                </div>
+            `);
+            document.querySelector(".empty-msg").scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => {
+                $(".empty-msg").fadeOut(500);
+                $(".empty-msg").remove();
+            }, 1000);
+        }
+    }
+
     return false;
 })
 
