@@ -6,7 +6,7 @@
 
 body {
     background: #17212b;
-    overflow-y: hidden;
+    /* overflow-y: hidden; */
 }
 
 .heading-color {
@@ -21,19 +21,7 @@ body {
 #left-container {
     border: 1px solid #0e1621;
     position: relative;
-    min-width: 27%;
-    max-width: 35%;
-}
-
-#resizable-handle {
-    background-color: #bcbcbc;
-    position: absolute;
-    cursor: ew-resize;
-    display: none;
-    height: 100%;
-    width: 2px;
-    right: 0;
-    top: 0;
+    width: 600px;
 }
 
 #sidebar-content {
@@ -55,14 +43,15 @@ body {
 }
 
 .profile {
-    margin: 20px 10px;
+    position: relative;
+    margin: 20px 10px 5px 10px;
 }
 
 .profile img {
-    object-fit: cover;
-    width: 80px;
-    height: 80px;
     border-radius: 100px;
+    object-fit: cover;
+    height: 80px;
+    width: 80px;
 }
 
 .active-user {
@@ -80,6 +69,7 @@ body {
 }
 
 .profile .rank {
+    color: #f5f5f5;
     font-size: 14px;
 }
 
@@ -152,12 +142,13 @@ body {
 }
 
 .convo {
-    width: 100%;
+    position: relative;
     margin: 12px auto;
     line-height: 25px;
     padding: 5px 0px;
-    cursor: pointer;
     transition: 0.1s;
+    cursor: pointer;
+    width: 100%;
 }
 
 .convo-separator {
@@ -202,9 +193,10 @@ body {
 .convo .new-msg {
     background-color: #4789ff;
     border-radius: 12px;
-    padding: 4px 8px;
     font-size: 13px;
+    padding: 0 8px;
     color: #fff;
+    float: right;
 }
 
 .convo-notification {
@@ -255,11 +247,11 @@ body {
     border: 1px solid #0e1621;
     background: #17212b;
     padding: 0px 15px;
+    color: #f5f5f5;
     display: none;
 }
 
 #receive-user-name {
-    color: #f5f5f5;
     text-transform: capitalize;
 }
 
@@ -326,7 +318,7 @@ body {
 }
 
 .receive-msg .msg-content {
-    border-radius: 0px 15px 15px 15px;
+    border-radius: 0px 7px 7px 7px;
     background-color: #182533;
 }
 
@@ -337,7 +329,7 @@ body {
 
 .sent-msg .msg-content {
     background-color: #2b5278;
-    border-radius: 15px 0px 15px 15px;
+    border-radius: 7px 0px 7px 7px;
 }
 
 #conversation::-webkit-scrollbar {
@@ -378,7 +370,42 @@ body {
 }
 
 .typing-section button {
-    cursor: pointer;
     background: transparent;
+    cursor: pointer;
     border: none;
+}
+
+@media (max-width: 1300px) {
+    #left-container {
+        width: 550px;
+    }
+}
+
+@media (max-width: 850px) {
+    #right-container {
+        width: 100%;
+        display: none;
+    }
+
+    #left-container {
+        padding: 0 15px;
+        width: 100%;
+    }
+
+    .fa-arrow-left {
+        display: inline !important;
+        border-radius: 100px;
+        padding: 15px;
+    }
+
+    .msg-content {
+        max-width: 80%;
+    }
+}
+
+@media (max-width: 500px) {
+    #left-container {
+        padding: 0;
+    }
+
 }

@@ -1,4 +1,3 @@
-let isResizing = false;
 let USER = null;
 let PARTICIPANT = null;
 let CONVO_ID = null;
@@ -11,28 +10,6 @@ let convo_pagination_page = 1;
 let chat_pagination_page = 1;
 
 const socket = new WebSocket(`ws://${host}:${port}/ws/`);
-
-
-function startResize(e) {
-    isResizing = true;
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', stopResize);
-}
-
-
-function handleMouseMove(e) {
-    if (isResizing) {
-        const sidebar = document.getElementById('left-container');
-        sidebar.style.width = e.clientX + 'px';
-    }
-}
-
-
-function stopResize() {
-    isResizing = false;
-    document.removeEventListener('mousemove', handleMouseMove);
-    document.removeEventListener('mouseup', stopResize);
-}
 
 
 function get_msg_time(date) {
@@ -92,7 +69,7 @@ fetch("/chat/my_user/").
             $("#user_profile_picture").attr("src", USER.avatar);
             $("#user_profile_picture").attr("alt", `${USER.username} profile picture`);
             $("#user_name").text(USER.username);
-            $("#user_title").text("");
+            $("#user_title").text("Django Developer");
         } else {
             location.reload();
         }
@@ -159,11 +136,11 @@ function action_chat(data) {
 
         if (convo.length == 0) {
             $("#convo-list").prepend(`
-            <div class="row convo" id="convo_${data.conversation_id}" onclick="start_chat(${data.sender.id}, ${data.conversation_id})">
-                <div class="col-2">
+            <div class="d-flex align-items-center convo" id="convo_${data.conversation_id}" onclick="start_chat(${data.sender.id}, ${data.conversation_id})">
+                <div class="px-2">
                     <img src="${data.sender.avtar}">
                 </div>
-                <div class="col-7">
+                <div class="px-3 w-75">
                     <div class="name">
                         ${data.sender.username}
                     </div>
@@ -171,7 +148,7 @@ function action_chat(data) {
                         ${data.text}
                     </div>
                 </div>
-                <div class="col-3 text-end">
+                <div class="position-absolute" style="right: 15px;">
                     <div class="msg-time" id="msg_time_${data.conversation_id}">
                         ${get_msg_time(data.send_at)}
                     </div>
@@ -184,7 +161,7 @@ function action_chat(data) {
         }
 
         $(`#new_msg_${data.conversation_id}`).text(data.unseen_count);
-        $(`#new_msg_${data.conversation_id}`).show();
+        $(`#new_msg_${data.conversation_id}`).css({ "visibility": "visible" });
 
     }
     bring_conversation_to_top(convo);
@@ -295,7 +272,7 @@ function load_previous_chat(first = false) {
                 }
 
                 if (first) {
-                    document.querySelector("#conversation div.msg:last-child").scrollIntoView({behavior: 'smooth'});
+                    document.querySelector("#conversation div.msg:last-child").scrollIntoView({ behavior: 'smooth' });
                 }
 
             } else {
@@ -313,6 +290,10 @@ function start_chat(participant_id, convo_id) {
             if (data.code == "success") {
                 PARTICIPANT = data.user;
                 CONVO_ID = convo_id;
+                if ($(window).width() < 851) {
+                    $("#left-container").hide();
+                    $("#right-container").show();
+                }
 
                 $("#conversation").html("");
                 $("#receive-user-img").attr("src", PARTICIPANT.avatar);
@@ -324,7 +305,7 @@ function start_chat(participant_id, convo_id) {
                 mark_convo_seen()
                 chat_pagination_page = 1;
                 load_previous_chat(true);
-                $(`#new_msg_${CONVO_ID}`).hide();
+                $(`#new_msg_${CONVO_ID}`).css({ "visibility": "hiddenss" });
             } else if (data.code == "error") {
                 $("#no-chat-dialouge").text(data.detail);
             }
@@ -352,11 +333,11 @@ function load_convo() {
                 let last_msg_time = convo.last_msg.send_at ? get_convo_msg_time(convo.last_msg.send_at) : "";
 
                 $("#convo-list").append(`
-                <div class="row convo" id="convo_${convo.id}" onclick="start_chat(${participant_id}, ${convo.id})">
-                    <div class="col-2">
+                <div class="d-flex align-items-center convo" id="convo_${convo.id}" onclick="start_chat(${participant_id}, ${convo.id})">
+                    <div class="px-2">
                         <img src="${convo_avtar}">
                     </div>
-                    <div class="col-7">
+                    <div class="px-3 w-75">
                         <div class="name">
                             ${convo_title}
                         </div>
@@ -364,11 +345,11 @@ function load_convo() {
                             ${convo.last_msg.text}
                         </div>
                     </div>
-                    <div class="col-3 text-end">
+                    <div class="position-absolute" style="right: 15px;">
                         <div class="msg-time" id="msg_time_${convo.id}">
                             ${last_msg_time}
                         </div>
-                        <span class="new-msg" id="new_msg_${convo.id}" style="display: ${convo.last_msg.unseen_count ? 'inline' : 'none'};">
+                        <span class="new-msg" id="new_msg_${convo.id}" style="visibility: ${convo.last_msg.unseen_count ? 'visible' : 'hidden'};">
                             ${convo.last_msg.unseen_count}
                         </span>
                     </div>
@@ -378,5 +359,10 @@ function load_convo() {
         })
 }
 
+$('.fa-arrow-left').click(() => {
+    $("#left-container").show();
+    $("#right-container").hide();
+    $("#conversation").html("");
+})
 
 setTimeout(load_convo, 1000);

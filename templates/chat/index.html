@@ -25,22 +25,21 @@
 
         <!-- Left container starts here -->
         <div id="left-container">
-            <div id="resizable-handle" onmousedown="startResize(event)"></div>
 
             <!-- User profile -->
-            <div class="profile row align-items-center">
-                <div class="col-3">
+            <div class="profile d-flex align-items-center">
+                <div style="padding: 0 5px;">
                     <img id="user_profile_picture" src="">
                 </div>
-                <div class="col-8" style="line-height: 0px;">
+                <div style="line-height: 0px; padding: 0 10px;">
                     <div class="h3 name" id="user_name">
                         
                     </div>
-                    <div class="rank heading-color" id="user_title">
-                        
+                    <div class="rank" id="user_title">
+                        Django Developer
                     </div>
                 </div>
-                <div class="col-1">
+                <div style="position: absolute; right: 15px;">
                     <i class="fa-solid fa-gear fa-lg" id="settings"></i>
                 </div>
             </div>
@@ -74,7 +73,7 @@
                 </div>
 
                 <!-- Search Bar -->
-                <div class="input-group my-4 mx-auto search">
+                <div class="input-group my-3 mx-auto search">
                     <input type="text" class="form-control" placeholder="Search Friends">
                     <span class="input-group-text">
                         <i class="fa-solid fa-magnifying-glass"></i>
@@ -132,6 +131,7 @@
 
             <!-- user name to chat  -->
             <div class="align-items-center justify-content-start chat-user">
+                <i class="fa-solid fa-arrow-left d-none"></i>
                 <div class="img">
                     <img src="/static/imgs/user/user.png" id="receive-user-img">
                 </div>
