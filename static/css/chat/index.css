@@ -21,7 +21,7 @@ body {
 #left-container {
     border: 1px solid #0e1621;
     position: relative;
-    width: 600px;
+    width: 500px;
 }
 
 #sidebar-content {
@@ -352,14 +352,14 @@ body {
 
 .typing-section {
     border: 1px solid #0e1621;
+    background: #17212b;
     padding: 0 20px;
     display: none;
 }
 
 .typing-section input {
-    border-radius: 17px;
-    margin-top: 15px;
     border: 1px solid #ccc;
+    border-radius: 17px;
     padding: 10px 15px;
     line-height: 35px;
     color: #565656;
@@ -374,7 +374,7 @@ body {
 
 .typing-section img {
     background: transparent;
-    padding-top: 15px;
+    padding: 15px;
     border: none;
 }
 
@@ -384,9 +384,21 @@ body {
     border: none;
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 1450px) {
     #left-container {
-        width: 550px;
+        width: 450px;
+    }
+}
+
+@media (max-width: 1250px) {
+    #left-container {
+        width: 400px;
+    }
+}
+
+@media (max-width: 950px) {
+    #left-container {
+        width: 360px;
     }
 }
 
@@ -409,6 +421,14 @@ body {
 
     .msg-content {
         max-width: 80%;
+    }
+
+    .typing-section {
+        padding: 5px 5px;
+    }
+
+    .typing-section img {
+        padding: 5px;
     }
 }
 
