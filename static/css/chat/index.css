@@ -272,6 +272,7 @@ body {
     padding: 0px 15px 10px 20px;
     padding-bottom: 10px;
     overflow-y: scroll;
+    position: relative;
     height: 90%;
 }
 
@@ -341,6 +342,14 @@ body {
     border-radius: 30px;
 }
 
+.empty-msg {
+    color: #dc3545 !important;
+    /* position: absolute; */
+    font-size: .875em;
+    margin: 0 15px;
+    bottom: -5px;
+}
+
 .typing-section {
     border: 1px solid #0e1621;
     padding: 0 20px;
@@ -408,4 +417,23 @@ body {
         padding: 0;
     }
 
+    .msg-content {
+        font-size: 15px;
+    }
+
+    .msg .time {
+        font-size: 10px;
+    }
+
+    .user-img {
+        display: none;
+    }
+
+    .chat-user {
+        padding: 0;
+    }
+
+    #conversation {
+        padding: 0px;
+    }
 }
