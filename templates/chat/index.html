@@ -25,22 +25,21 @@
 
         <!-- Left container starts here -->
         <div id="left-container">
-            <div id="resizable-handle" onmousedown="startResize(event)"></div>
 
             <!-- User profile -->
-            <div class="profile row align-items-center">
-                <div class="col-3">
+            <div class="profile d-flex align-items-center">
+                <div style="padding: 0 5px;">
                     <img id="user_profile_picture" src="">
                 </div>
-                <div class="col-8" style="line-height: 0px;">
+                <div style="line-height: 0px; padding: 0 10px;">
                     <div class="h3 name" id="user_name">
                         
                     </div>
-                    <div class="rank heading-color" id="user_title">
-                        
+                    <div class="rank" id="user_title">
+                        Django Developer
                     </div>
                 </div>
-                <div class="col-1">
+                <div style="position: absolute; right: 15px;">
                     <i class="fa-solid fa-gear fa-lg" id="settings"></i>
                 </div>
             </div>
@@ -74,7 +73,7 @@
                 </div>
 
                 <!-- Search Bar -->
-                <div class="input-group my-4 mx-auto search">
+                <div class="input-group my-3 mx-auto search">
                     <input type="text" class="form-control" placeholder="Search Friends">
                     <span class="input-group-text">
                         <i class="fa-solid fa-magnifying-glass"></i>
@@ -88,31 +87,8 @@
                 </div>
 
                 <!-- Friends List -->
-                <div id="convo-list">
-                    <!-- <div class="row convo" id="convo_1">
-                        <div class="col-2">
-                            <img src="{% static 'imgs/user/user.png' %}">
-                        </div>
-                        <div class="col-7">
-                            <div class="name">
-                                Charles Xavier
-                            </div>
-                            <div class="last-msg heading-color" id="last_msg_1">
-                                Our boat, the Sunseeker.
-                            </div>
-                        </div>
-                        <div class="col-3 text-end">
-                            <div class="msg-time" id="msg_time_1">
-                                10:34 AM
-                            </div>
-                            <span class="new-msg" id="new_msg_1">
-                                
-                            </span>
-                        </div>
-                    </div>
-                    <convo-separator class="convo-separator"></convo-separator> -->
-
-                </div>
+                <div id="convo-list"></div>
+                
                 <div class="text-center pt-2">
                     <button class="btn btn-primary load_more_btn" onclick="load_convo()">load more</button>
                 </div>
@@ -132,6 +108,7 @@
 
             <!-- user name to chat  -->
             <div class="align-items-center justify-content-start chat-user">
+                <i class="fa-solid fa-arrow-left d-none"></i>
                 <div class="img">
                     <img src="/static/imgs/user/user.png" id="receive-user-img">
                 </div>
@@ -141,29 +118,7 @@
             </div>
 
             <div class="chat-section">
-                <div id="conversation">
-                    
-                    <!-- <div class="msg-day">
-                        26 Oct 2023
-                    </div>
-                    <div class="receive-msg msg">
-                        <img class="user-img" src="/media/avatars/profile_6.webp">
-                        <div class="msg-content">
-                            n publishing and graphic design, Lorem ipsum is a placeholder text commonly used to
-                            demonstrate the visual form of a document or a typeface without relying on meaningful
-                            content. Lorem ipsum may be used as a placeholder before final copy is available
-                            <div class="time">07:30 pm</div>
-                        </div>
-                    </div>
-                    <div class="sent-msg msg">
-                        <img class="user-img" src="/media/avatars/bili_2.jpg">
-                        <div class="msg-content">
-                            n publishing and graphic design, Lorem ipsum is a placeholder text commonly used to
-                            demonstrate the visual form of a document or a typeface without relying on meaningful
-                            content. Lorem ipsum may be used as a placeholder before final copy is available
-                        </div>
-                    </div> -->
-                </div>
+                <div id="conversation"></div>
 
                 <div class="typing-section">
                     <form id="msg_form" class="d-flex align-items-center">
