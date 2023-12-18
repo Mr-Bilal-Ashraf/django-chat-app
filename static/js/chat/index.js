@@ -60,6 +60,18 @@ function get_convo_msg_time(date) {
 }
 
 
+function add_notification_to_convo_btn(){
+    let unread_convos = $(".visibility-visible").length;
+    if (unread_convos) {
+        $("#new-msgs").text(unread_convos);
+        $("#new-msgs").show();
+    } else {
+        $("#new-msgs").text(unread_convos);
+        $("#new-msgs").hide();
+    }
+}
+
+
 fetch("/chat/my_user/").
     then(resp => {
         return resp.json()
@@ -161,8 +173,8 @@ function action_chat(data) {
         }
 
         $(`#new_msg_${data.conversation_id}`).text(data.unseen_count);
-        $(`#new_msg_${data.conversation_id}`).css({ "visibility": "visible" });
-
+        $(`#new_msg_${data.conversation_id}`).toggleClass("visibility-visible");
+        add_notification_to_convo_btn();
     }
     bring_conversation_to_top(convo);
     add_new_msg_details_to_convo(data);
@@ -305,6 +317,7 @@ function start_chat(participant_id, convo_id) {
             return resp.json()
         }).then(data => {
             if (data.code == "success") {
+                console.log(data)
                 PARTICIPANT = data.user;
                 CONVO_ID = convo_id;
                 if ($(window).width() < 851) {
@@ -322,7 +335,9 @@ function start_chat(participant_id, convo_id) {
                 mark_convo_seen()
                 chat_pagination_page = 1;
                 load_previous_chat(true);
-                $(`#new_msg_${CONVO_ID}`).css({ "visibility": "hiddenss" });
+                $(`#new_msg_${CONVO_ID}`).removeClass("visibility-visible");
+
+                add_notification_to_convo_btn();
             } else if (data.code == "error") {
                 $("#no-chat-dialouge").text(data.detail);
             }
@@ -335,7 +350,6 @@ function load_convo() {
         then(resp => {
             return resp.json()
         }).then(data => {
-            console.log(data)
             if (data.next) {
                 $('.load_more_btn').fadeIn(300)
                 convo_pagination_page++;
@@ -348,6 +362,7 @@ function load_convo() {
                 let convo_avtar = (USER.id != convo.initiator.id) ? convo.initiator.avatar : convo.participant.avatar;
                 let convo_title = (USER.id != convo.initiator.id) ? convo.initiator.username : convo.participant.username;
                 let last_msg_time = convo.last_msg.send_at ? get_convo_msg_time(convo.last_msg.send_at) : "";
+                let visibility_cls = convo.last_msg.unseen_count ? 'visibility-visible' : '';
 
                 $("#convo-list").append(`
                 <div class="d-flex align-items-center convo" id="convo_${convo.id}" onclick="start_chat(${participant_id}, ${convo.id})">
@@ -366,13 +381,15 @@ function load_convo() {
                         <div class="msg-time" id="msg_time_${convo.id}">
                             ${last_msg_time}
                         </div>
-                        <span class="new-msg" id="new_msg_${convo.id}" style="visibility: ${convo.last_msg.unseen_count ? 'visible' : 'hidden'};">
+                        <span class="new-msg ${visibility_cls}" id="new_msg_${convo.id}">
                             ${convo.last_msg.unseen_count}
                         </span>
                     </div>
                 </div>
                 `);
             });
+
+            add_notification_to_convo_btn();
         })
 }
 

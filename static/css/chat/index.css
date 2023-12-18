@@ -21,7 +21,7 @@ body {
 #left-container {
     border: 1px solid #0e1621;
     position: relative;
-    width: 500px;
+    width: 600px;
 }
 
 #sidebar-content {
@@ -193,10 +193,15 @@ body {
 .convo .new-msg {
     background-color: #4789ff;
     border-radius: 12px;
+    visibility: hidden;
     font-size: 13px;
     padding: 0 8px;
     color: #fff;
     float: right;
+}
+
+.visibility-visible {
+    visibility: visible !important;
 }
 
 .convo-notification {
@@ -265,7 +270,7 @@ body {
 }
 
 .chat-section {
-    height: calc(100vh - 83px);
+    height: calc(100vh - 82px);
 }
 
 #conversation {
@@ -386,19 +391,19 @@ body {
 
 @media (max-width: 1450px) {
     #left-container {
-        width: 450px;
+        width: 550px;
     }
 }
 
 @media (max-width: 1250px) {
     #left-container {
-        width: 400px;
+        width: 500px;
     }
 }
 
 @media (max-width: 950px) {
     #left-container {
-        width: 360px;
+        width: 450px;
     }
 }
 
@@ -455,5 +460,35 @@ body {
 
     #conversation {
         padding: 0px;
+    }
+}
+
+@media screen and (max-height: 900px) {
+    .chat-section {
+        height: calc(100vh - 88px);
+    }
+}
+
+@media screen and (max-height: 850px) {
+    .chat-section {
+        height: calc(100vh - 93px);
+    }
+}
+
+@media screen and (max-height: 800px) {
+    .chat-section {
+        height: calc(100vh - 96px);
+    }
+}
+
+@media screen and (max-height: 750px) {
+    .chat-section {
+        height: calc(100vh - 103px);
+    }
+}
+
+@media screen and (max-height: 700px) {
+    .chat-section {
+        height: calc(100vh - 108px);
     }
 }
